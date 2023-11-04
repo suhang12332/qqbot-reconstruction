@@ -13,8 +13,7 @@ func (send *Send)songMessage(info string) *Send {
 	song := send.queryCloudSong(info).Result
 	if song.SongCount != 0 {
 		res := util.MusicCQ(((song.Songs)[0]).ID, "163")
-		msg := (*send).Params.(*variable.SendMsg)
-		msg.Message = res
+		((*send).Params.(*variable.SendMsg)).Message = res
 	}
 	return send
 }

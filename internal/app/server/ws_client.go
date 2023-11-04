@@ -1,4 +1,4 @@
-package client
+package server
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ var ws *wsc.Wsc
 
 // WS
 // @description: ws配置
-func init() {
+func Start() {
 	done := make(chan bool)
 	ws = wsc.New(variable.Urls.Ws)
 	// 可自定义配置，不使用默认配置
@@ -61,7 +61,7 @@ func init() {
 		log.Error("回复失败: ", err.Error())
 	})
 	ws.OnTextMessageReceived(func(message string) {
-		log.Infof(message)
+		receiveMessage(message)
 	})
 	go ws.Connect()
 	for {
@@ -75,7 +75,7 @@ func init() {
 // @description: 发送消息
 // @param c websocket指针
 // @param message 消息
-func SendMessage(send *string) {
+func sendQMessage(send *string) {
 	err := ws.SendTextMessage(*send)
 	if err == wsc.CloseErr {
 		return
