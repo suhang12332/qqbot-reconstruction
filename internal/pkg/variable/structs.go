@@ -282,3 +282,59 @@ type SendMessage struct {
 	Params any    `json:"params"`
 	Echo   string `json:"echo"`
 }
+
+// AliResult
+// @description: 阿里云盘搜索结果结构体
+type AliResult struct {
+	Code int    `json:"code"`
+	Msg  string `json:"msg"`
+	Data struct {
+		Total int `json:"total"`
+		List  []struct {
+			ID          string      `json:"id"`
+			Name        string      `json:"name"`
+			URL         string      `json:"url"`
+			Type        interface{} `json:"type"`
+			From        string      `json:"from"`
+			Content     interface{} `json:"content"`
+			GmtCreate   string      `json:"gmtCreate"`
+			GmtShare    interface{} `json:"gmtShare"`
+			FileCount   int         `json:"fileCount"`
+			CreatorID   string      `json:"creatorId"`
+			CreatorName string      `json:"creatorName"`
+			FileInfos   []struct {
+				Category      interface{} `json:"category"`
+				FileExtension interface{} `json:"fileExtension"`
+				FileID        string      `json:"fileId"`
+				FileName      string      `json:"fileName"`
+				Type          string      `json:"type"`
+			} `json:"fileInfos"`
+		} `json:"list"`
+	} `json:"data"`
+}
+
+// Messages
+// @description: 群聊消息转发
+type Messages struct {
+	Type string          `json:"type"`
+	Data GroupFowardData `json:"data"`
+}
+// GroupFowardData
+// @description: 群聊消息转发
+type GroupFowardData struct {
+	Name    string `json:"name"`
+	Uin     int    `json:"uin"`
+	Content string `json:"content"`
+}
+// SendGroupForwardMsg
+// @description: 群聊消息发送
+type SendGroupForwardMsg struct {
+	GroupID  int        `json:"group_id"`
+	Messages []Messages `json:"messages"`
+}
+// SendPrivateForwardMsg
+// @description: 私聊消息发送
+type SendPrivateForwardMsg struct {
+	UserID   int        `json:"user_id"`
+	Messages []Messages `json:"messages"`
+}

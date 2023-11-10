@@ -14,27 +14,28 @@ func receiveMessage(message string) {
 	}
 }
 
-func handleReceiveMessage[T any](message string,t *T) *T {
+func handleReceiveMessage[T any](message string, t *T) *T {
 	bytes := []byte(message)
 	json.Unmarshal(bytes, t)
 	return t
 }
 
-func (receive *Receive)switchFunction() {
+func (receive *Receive) switchFunction() {
 	receive.printfMessage()
 	split := strings.Split(receive.RawMessage, " ")
 	if len(split) == 2 {
 		switch split[0] {
 		case "点歌":
 			receive.SearchSong(split[1])
+			break
+		case "云盘":
+			receive.searchAli(split[1])
+			break
 		}
 	}
 }
 
-
-
-
-func (receive *Receive)printfMessage() {
+func (receive *Receive) printfMessage() {
 	receiveMsg := (*receive).RawMessage
 	if (*receive).MessageType == "group" {
 		groupId := (*receive).GroupId

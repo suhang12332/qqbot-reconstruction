@@ -27,8 +27,10 @@ func HttpHandler[T any](method string, url string, params string, t *T, header m
 	}
 	client := &http.Client{Transport: tr}
 	req, _ := http.NewRequest(method, url, strings.NewReader(params))
-	for v, k := range header {
-		req.Header.Set(v, k)
+	if header != nil {
+		for v, k := range header {
+			req.Header.Set(v, k)
+		}
 	}
 	resp, err := client.Do(req)
 	if err != nil {
