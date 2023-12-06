@@ -12,25 +12,25 @@ import (
 // @description: 查询歌曲信息
 // @param info 歌名
 // @return string cq码
-func (send *Send) songMessage(info string) *Send {
-	song := send.queryCloudSong(info).Result
+func (send *Send) songMessage(receive *Receive) {
+	song := send.queryCloudSong(strings.Split(receive.RawMessage, " ")[1]).Result
 	if song.SongCount != 0 {
 		res := util.MusicCQ(((song.Songs)[0]).ID, "163")
 		((*send).Params.(*variable.SendMsg)).Message = res
 	}
-	return send
+	send.sendMessage()
 }
 
 // aliMessage
 // @description: 查询歌曲信息
 // @param info 歌名
 // @return string cq码
-func (send *Send) aliMessage(info string, messageType string) *Send {
-	aliInfos := send.queryAliDriver(info).Data.List
+func (send *Send) aliMessage(receive *Receive) {
+	aliInfos := send.queryAliDriver(strings.Split(receive.RawMessage, " ")[1]).Data.List
+
 	messages := make([]variable.Messages, len(aliInfos))
 	for key, value := range aliInfos {
-		decrypt := crypto.FromBase64String(value.URL).SetKey("4OToScUFOaeVTrHE").SetIv("9CLGao1vHKqm17Oz").Aes().CBC().PKCS7Padding().Decrypt().ToString()
-		result := fmt.Sprintf("%s%s", strings.ReplaceAll(strings.ReplaceAll(value.Name, "<span style=\"color: red;\">", ""), "</span>", ""), decrypt)
+		result := send.getAliDriverUrl(value)
 		messages[key] = variable.Messages{
 			Type: "node",
 			Data: variable.GroupFowardData{
@@ -40,11 +40,33 @@ func (send *Send) aliMessage(info string, messageType string) *Send {
 			},
 		}
 	}
-	if messageType == variable.GROUPMESSGAE {
-		((*send).Params.(*variable.SendGroupForwardMsg)).Messages = messages
-	} else {
-		((*send).Params.(*variable.SendPrivateForwardMsg)).Messages = messages
-	}
+	((*send).Params.(*variable.SendGroupForwardMsg)).Messages = messages
+	send.sendMessage()
+}
 
-	return send
+func (send *Send) magnetMessage(receive *Receive) {
+	data := send.queryMagnet(strings.Split(receive.RawMessage, " ")[1]).Data
+	messages := make([]variable.Messages, len(data))
+	for key, value := range data {
+		m := value.Magnet
+		replace := strings.Replace(m, `//btsow.click/magnet/detail/hash/`, "", len(m))
+		value := fmt.Sprintf("%s %s", fmt.Sprintf("%s %s", value.Title, value.Size), replace)
+		util.ParseMessage(&value)
+		messages[key] = variable.Messages{
+			Type: "node",
+			Data: variable.GroupFowardData{
+				Name:    "磁力搜索结果",
+				Uin:     variable.QQ,
+				Content: value,
+			},
+		}
+	}
+	((*send).Params.(*variable.SendGroupForwardMsg)).Messages = messages
+	send.sendMessage()
+}
+
+func (send *Send) getAliDriverUrl(value variable.FileInfo) string {
+	decrypt := crypto.FromBase64String(value.URL).SetKey("4OToScUFOaeVTrHE").SetIv("9CLGao1vHKqm17Oz").Aes().CBC().PKCS7Padding().Decrypt().ToString()
+	result := fmt.Sprintf("%s%s", strings.ReplaceAll(strings.ReplaceAll(value.Name, "<span style=\"color: red;\">", ""), "</span>", ""), decrypt)
+	return result
 }

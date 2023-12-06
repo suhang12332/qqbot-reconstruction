@@ -26,10 +26,13 @@ func (receive *Receive) switchFunction() {
 	if len(split) == 2 {
 		switch split[0] {
 		case "点歌":
-			receive.SearchSong(split[1])
+			receive.SearchSong()
 			break
 		case "云盘":
-			receive.searchAli(split[1])
+			receive.searchAli()
+			break
+		case "资源":
+			receive.searchMagnet()
 			break
 		}
 	}

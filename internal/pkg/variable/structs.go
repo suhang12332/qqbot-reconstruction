@@ -3,60 +3,58 @@ package variable
 // Action
 // 发送消息的结构体
 type Action struct {
-	SendPrivateMsg       string
-	SendGroupMsg         string
-	SendMsg              string
-	DeleteMsg            string
-	SetGroupKick         string
-	SetGroupBan          string
-	SetGroupWholeBan     string
-	SetGroupAdmin        string
-	SetGroupCard         string
-	SetGroupName         string
-	SetGroupLeave        string
-	SetGroupSpecialTitle string
-	SetFriendAddRequest  string
-	SetGroupAddRequest   string
-	GetLoginInfo         string
-	GetStrangerInfo      string
-	GetFriendList        string
-	GetGroupInfo         string
-	GetGroupList         string
-	GetGroupMemberInfo   string
-	GetGroupMemberList   string
-	GetGroupHonorInfo    string
-	CanSendImage         string
-	CanSendRecord        string
-	GetVersionInfo       string
-	SetRestart           string
-	SendGroupForwardMsg  string
+	SendPrivateMsg        string
+	SendGroupMsg          string
+	SendMsg               string
+	DeleteMsg             string
+	SetGroupKick          string
+	SetGroupBan           string
+	SetGroupWholeBan      string
+	SetGroupAdmin         string
+	SetGroupCard          string
+	SetGroupName          string
+	SetGroupLeave         string
+	SetGroupSpecialTitle  string
+	SetFriendAddRequest   string
+	SetGroupAddRequest    string
+	GetLoginInfo          string
+	GetStrangerInfo       string
+	GetFriendList         string
+	GetGroupInfo          string
+	GetGroupList          string
+	GetGroupMemberInfo    string
+	GetGroupMemberList    string
+	GetGroupHonorInfo     string
+	CanSendImage          string
+	CanSendRecord         string
+	GetVersionInfo        string
+	SetRestart            string
+	SendGroupForwardMsg   string
 	SendPrivateForwardMsg string
 }
-
 
 // ApiUrl
 // @description: 定义Api信息结构体
 type ApiUrl struct {
-	Ws        string
-	Magnet    string
-	Ali       string
-	Mysql     string
-	CloudSong string
-	Reply     string
-	Weather   string
-	Joke      string
-	Hot       string
-	Love      string
-	TaoShow   string
-	CosShow   string
-	MoYu      string
-	Book      string
-	QqSong    string
+	Ws            string
+	Magnet        string
+	Ali           string
+	Mysql         string
+	CloudSong     string
+	Reply         string
+	Weather       string
+	Joke          string
+	Hot           string
+	Love          string
+	TaoShow       string
+	CosShow       string
+	MoYu          string
+	Book          string
+	QqSong        string
 	OpenAiMessage string
-	OPenAiPhoto string
-	Verb string
+	OPenAiPhoto   string
+	Verb          string
 }
-
 
 // Sender
 // @description: 用户信息结构体
@@ -72,7 +70,6 @@ type Sender struct {
 	UserID   int    `json:"user_id"`
 }
 
-
 // SendMsg
 // @description: 发送消息参数
 type SendMsg struct {
@@ -82,12 +79,12 @@ type SendMsg struct {
 	Message     string `json:"message"`
 	AutoEscape  bool   `json:"auto_escape"`
 }
+
 // DeleteMsg
 // @description: 撤回消息
 type DeleteMsg struct {
 	MessageID int `json:"message_id"`
 }
-
 
 // SetFriendAddRequest
 // @description: 加好友
@@ -105,9 +102,6 @@ type SetGroupAddRequest struct {
 	Approve bool   `json:"approve"`
 	Reason  string `json:"reason"`
 }
-
-
-
 
 // CloudSong
 // @description: 网易云歌曲结构体
@@ -259,20 +253,20 @@ type CloudSong struct {
 // ReceiveMessage
 // @description: 接收消息
 type ReceiveMessage struct {
-	PostType    string       `json:"post_type"`
-	MessageType string       `json:"message_type"`
-	Time        int          `json:"time"`
-	SelfID      int64        `json:"self_id"`
-	SubType     string       `json:"sub_type"`
+	PostType    string `json:"post_type"`
+	MessageType string `json:"message_type"`
+	Time        int    `json:"time"`
+	SelfID      int64  `json:"self_id"`
+	SubType     string `json:"sub_type"`
 	Sender      Sender `json:"sender"`
-	MessageID   int          `json:"message_id"`
-	UserID      int          `json:"user_id"`
-	TargetID    int64        `json:"target_id"`
-	Message     string       `json:"business"`
-	MessageSeq  int          `json:"message_seq"`
-	RawMessage  string       `json:"raw_message"`
-	Font        int          `json:"font"`
-	GroupId     int          `json:"group_id"`
+	MessageID   int    `json:"message_id"`
+	UserID      int    `json:"user_id"`
+	TargetID    int64  `json:"target_id"`
+	Message     string `json:"business"`
+	MessageSeq  int    `json:"message_seq"`
+	RawMessage  string `json:"raw_message"`
+	Font        int    `json:"font"`
+	GroupId     int    `json:"group_id"`
 }
 
 // SendMessage
@@ -289,28 +283,28 @@ type AliResult struct {
 	Code int    `json:"code"`
 	Msg  string `json:"msg"`
 	Data struct {
-		Total int `json:"total"`
-		List  []struct {
-			ID          string      `json:"id"`
-			Name        string      `json:"name"`
-			URL         string      `json:"url"`
-			Type        interface{} `json:"type"`
-			From        string      `json:"from"`
-			Content     interface{} `json:"content"`
-			GmtCreate   string      `json:"gmtCreate"`
-			GmtShare    interface{} `json:"gmtShare"`
-			FileCount   int         `json:"fileCount"`
-			CreatorID   string      `json:"creatorId"`
-			CreatorName string      `json:"creatorName"`
-			FileInfos   []struct {
-				Category      interface{} `json:"category"`
-				FileExtension interface{} `json:"fileExtension"`
-				FileID        string      `json:"fileId"`
-				FileName      string      `json:"fileName"`
-				Type          string      `json:"type"`
-			} `json:"fileInfos"`
-		} `json:"list"`
+		List  []FileInfo `json:"list"`
 	} `json:"data"`
+}
+type FileInfo struct {
+	ID          string      `json:"id"`
+	Name        string      `json:"name"`
+	URL         string      `json:"url"`
+	Type        interface{} `json:"type"`
+	From        string      `json:"from"`
+	Content     interface{} `json:"content"`
+	GmtCreate   string      `json:"gmtCreate"`
+	GmtShare    interface{} `json:"gmtShare"`
+	FileCount   int         `json:"fileCount"`
+	CreatorID   string      `json:"creatorId"`
+	CreatorName string      `json:"creatorName"`
+	FileInfos   []struct {
+		Category      interface{} `json:"category"`
+		FileExtension interface{} `json:"fileExtension"`
+		FileID        string      `json:"fileId"`
+		FileName      string      `json:"fileName"`
+		Type          string      `json:"type"`
+	} `json:"fileInfos"`
 }
 
 // Messages
@@ -319,6 +313,7 @@ type Messages struct {
 	Type string          `json:"type"`
 	Data GroupFowardData `json:"data"`
 }
+
 // GroupFowardData
 // @description: 群聊消息转发
 type GroupFowardData struct {
@@ -326,15 +321,33 @@ type GroupFowardData struct {
 	Uin     int    `json:"uin"`
 	Content string `json:"content"`
 }
+
 // SendGroupForwardMsg
 // @description: 群聊消息发送
 type SendGroupForwardMsg struct {
 	GroupID  int        `json:"group_id"`
 	Messages []Messages `json:"messages"`
 }
+
 // SendPrivateForwardMsg
 // @description: 私聊消息发送
 type SendPrivateForwardMsg struct {
 	UserID   int        `json:"user_id"`
 	Messages []Messages `json:"messages"`
 }
+
+
+// MagnetResult
+// @description: 磁力信息结构体
+type MagnetResult struct {
+	Code string `json:"code"`
+	Data []MagnetData `json:"data"`
+	Msg string `json:"msg"`
+}
+
+type MagnetData struct {
+	Title  string `json:"title"`
+	Size   string `json:"size"`
+	Magnet string `json:"magnet"`
+}
+

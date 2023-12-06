@@ -1,11 +1,15 @@
 package handle
 
 import (
+	"bytes"
 	"crypto/tls"
 	"encoding/json"
+	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/go-resty/resty/v2"
 	"io"
 	"net/http"
+	"os/exec"
 	"qqbot-reconstruction/internal/pkg/log"
 	"qqbot-reconstruction/internal/pkg/util"
 	"qqbot-reconstruction/internal/pkg/variable"
@@ -20,32 +24,36 @@ import (
 // @param t 泛型参数
 // @return T 泛型返回值
 // @returnType 返回类型 html,json
-func HttpHandler[T any](method string, url string, params string, t *T, header map[string]string, returnType string, fn func(*goquery.Document) []byte) T {
-	var all []byte
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	client := &http.Client{Transport: tr}
-	req, _ := http.NewRequest(method, url, strings.NewReader(params))
-	if header != nil {
-		for v, k := range header {
-			req.Header.Set(v, k)
+func HttpHandler[T any](method string, url string, params map[string]string, t *T, header map[string]string, returnType string, isBrowser bool, fn func(*goquery.Document) []byte) T {
+	var respByte []byte
+	var err error
+
+	if !isBrowser {
+		var result *resty.Response
+		client := resty.New().R().SetFormData(params).SetHeaders(header)
+		switch method {
+		case http.MethodGet:
+			result, err = client.Post(url)
+			break
+		case http.MethodPost:
+			result, err = client.Get(url)
+			break
 		}
-	}
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Error("查找资源失败: ", err)
-	}
-	if resp.StatusCode != 200 || resp == nil {
-		log.Errorf("资源请求失败")
-	}
-	defer resp.Body.Close()
-	if returnType == variable.HTML {
-		all = fn(util.ParseHtml(resp.Body))
+		if err != nil {
+			log.Error("查找资源失败: ", err)
+		} else {
+			respByte = []byte(result.String())
+		}
+
 	} else {
-		all, _ = io.ReadAll(resp.Body)
+		respByte, err = exec.Command("curl", url).CombinedOutput()
 	}
-	err = json.Unmarshal(all, t)
+
+	if returnType == variable.HTML {
+		reader := io.NopCloser(bytes.NewReader(respByte))
+		respByte = fn(util.ParseHtml(reader))
+	}
+	err = json.Unmarshal(respByte, t)
 	if err != nil {
 		log.Error("返回的信息转换struct失败", err)
 	}

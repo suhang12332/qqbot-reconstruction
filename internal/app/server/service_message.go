@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/json"
-	"fmt"
 	"qqbot-reconstruction/internal/pkg/log"
 	"qqbot-reconstruction/internal/pkg/variable"
 	"strings"
@@ -15,52 +14,43 @@ type (
 
 // SearchSong
 // @description: 搜素歌曲(网易云)
-func (receive *Receive) SearchSong(info string) {
-	initSend().
-		assembleMessage(variable.Actions.SendMsg, false, receive, variable.NORMALESSAGE, assembleSendMsg, "").
-		songMessage(info).
-		sendMessage()
+func (receive *Receive) SearchSong() {
+	initSend(receive).
+		songMessage(receive)
 }
 
 // SearchSong
 // @description: 搜素云盘(阿里云盘)
-func (receive *Receive) searchAli(info string) {
-	send := initSend()
-	if receive.MessageType == variable.PRIVATEMESSAGE {
-		send = send.assembleMessage(variable.Actions.SendMsg, false, receive, variable.NORMALESSAGE, assembleSendMsg, "").aliMessage(info,variable.NORMALESSAGE)
-	}else {
-		send = send.assembleMessage(variable.Actions.SendGroupForwardMsg, false, receive, variable.GROUPMESSGAE, assembleSendMsg, "").aliMessage(info,variable.GROUPMESSGAE)
-	}
-	marshal, _ := json.Marshal(send)
-	fmt.Println(string(marshal))
-	send.sendMessage()
+func (receive *Receive) searchAli() {
+	initSend(receive).
+		aliMessage(receive)
+}
+
+func (receive *Receive) searchMagnet() {
+	initSend(receive).
+		magnetMessage(receive)
 }
 
 // initSend
 // @description: 初始化消息
-func initSend() *Send {
-	return &Send{}
+func initSend(receive *Receive) *Send {
+	send := Send{}
+	send.assembleMessage(false, receive, false, assembleSendMsg)
+	return &send
 }
 
 // assembleSendMsg
 // @description: 组装发送消息
-func assembleSendMsg(isSpae bool, receive *Receive, messageType string, info ...string) any {
-	messages := make([]variable.Messages, 0)
-	if messageType == variable.GROUPMESSGAE || messageType == variable.PRIVATEMESSAGE {
-		json.Unmarshal([]byte(info[0]), &messages)
-	}
-	switch messageType {
-	case variable.GROUPMESSGAE:
+func assembleSendMsg(isSpae bool, receive *Receive, isForward bool) any {
+	if isForward && receive.MessageType == variable.GROUPMESSGAE {
 		return &variable.SendGroupForwardMsg{
-			GroupID:  (*receive).GroupId,
-			Messages: messages,
+			GroupID: (*receive).GroupId,
 		}
-	default:
+	} else {
 		return &variable.SendMsg{
 			MessageType: (*receive).MessageType,
 			UserId:      (*receive).UserID,
 			GroupId:     (*receive).GroupId,
-			Message:     info[0],
 			AutoEscape:  isSpae,
 		}
 	}
@@ -69,19 +59,17 @@ func assembleSendMsg(isSpae bool, receive *Receive, messageType string, info ...
 
 // assembleMessage
 // @description: 组装消息
-func (send *Send) assembleMessage(action string, isSpae bool, receive *Receive, messageType string,processor func(isSpae bool, receive *Receive, messageType string, info ...string) any, info ...string) *Send {
-	send.Params = processor(isSpae, receive, messageType, info...)
-	send.Action = action
+func (send *Send) assembleMessage(isSpae bool, receive *Receive, isForward bool, processor func(isSpae bool, receive *Receive, isForward bool) any) *Send {
+	send.Params = processor(isSpae, receive, isForward)
+	if isForward && receive.MessageType == variable.GROUPMESSGAE {
+		send.Action = variable.Actions.SendGroupForwardMsg
+	} else {
+		send.Action = variable.Actions.SendMsg
+	}
 	return send
 }
 
-func (send *Send) normalMessage() {
 
-}
-
-func (send *Send) groupMessage() {
-	
-}
 
 // sendMessage
 // @description: qq发送消息
