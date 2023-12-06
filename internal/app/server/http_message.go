@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"net/url"
 	"qqbot-reconstruction/internal/pkg/handle"
-	"qqbot-reconstruction/internal/pkg/util"
 	"qqbot-reconstruction/internal/pkg/variable"
 )
 
@@ -36,8 +35,10 @@ func (send *Send) queryAliDriver(info string) variable.AliResult {
 // @return variable.CloudSong 磁力结构体
 func (send *Send) queryMagnet(info string) variable.MagnetResult {
 	urls := fmt.Sprintf(variable.Urls.Magnet,url.QueryEscape(info))
-	return handle.HttpHandler(http.MethodGet,urls,nil,&variable.MagnetResult{},nil,variable.HTML,false, util.ParseMagnet)
+	return handle.HttpHandler(http.MethodGet,urls,nil,&variable.MagnetResult{},nil,variable.HTML,false, magnet)
 }
+
+
 
 
 

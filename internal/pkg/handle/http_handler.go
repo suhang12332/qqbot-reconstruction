@@ -2,9 +2,7 @@ package handle
 
 import (
 	"bytes"
-	"crypto/tls"
 	"encoding/json"
-	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/go-resty/resty/v2"
 	"io"
@@ -13,7 +11,6 @@ import (
 	"qqbot-reconstruction/internal/pkg/log"
 	"qqbot-reconstruction/internal/pkg/util"
 	"qqbot-reconstruction/internal/pkg/variable"
-	"strings"
 )
 
 // HttpHandler
