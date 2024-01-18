@@ -15,27 +15,27 @@ type (
 // SearchSong
 // @description: 搜素歌曲(网易云)
 func (receive *Receive) SearchSong() {
-	initSend(receive).
+	initSend(receive,false).
 		songMessage(receive)
 }
 
 // SearchSong
 // @description: 搜素云盘(阿里云盘)
 func (receive *Receive) searchAli() {
-	initSend(receive).
+	initSend(receive,true).
 		aliMessage(receive)
 }
 
 func (receive *Receive) searchMagnet() {
-	initSend(receive).
+	initSend(receive,true).
 		magnetMessage(receive)
 }
 
 // initSend
 // @description: 初始化消息
-func initSend(receive *Receive) *Send {
+func initSend(receive *Receive,isForward bool) *Send {
 	send := Send{}
-	send.assembleMessage(false, receive, false, assembleSendMsg)
+	send.assembleMessage(false, receive, isForward, assembleSendMsg)
 	return &send
 }
 

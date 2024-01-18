@@ -2,7 +2,6 @@ package server
 
 import (
 	"fmt"
-	"github.com/deatil/go-cryptobin/cryptobin/crypto"
 	"qqbot-reconstruction/internal/pkg/util"
 	"qqbot-reconstruction/internal/pkg/variable"
 	"strings"
@@ -26,12 +25,15 @@ func (send *Send) songMessage(receive *Receive) {
 // @param info 歌名
 // @return string cq码
 func (send *Send) aliMessage(receive *Receive) {
-	aliInfos := send.queryAliDriver(strings.Split(receive.RawMessage, " ")[1]).Data.List
+	aliInfos := send.queryAliDriver(strings.Split(receive.RawMessage, " ")[1]).Result.Items
 
-	messages := make([]variable.Messages, len(aliInfos))
+	messages := make([]variable.Messages, len(aliInfos)-3)
 	for key, value := range aliInfos {
-		result := send.getAliDriverUrl(value)
-		messages[key] = variable.Messages{
+		if key <= 2 {
+			continue
+		}
+		result := fmt.Sprintf("%s %s", value.Title,value.PageURL)
+		messages[key-3] = variable.Messages{
 			Type: "node",
 			Data: variable.GroupFowardData{
 				Name:    "阿里云盘搜索结果",
@@ -65,8 +67,8 @@ func (send *Send) magnetMessage(receive *Receive) {
 	send.sendMessage()
 }
 
-func (send *Send) getAliDriverUrl(value variable.FileInfo) string {
-	decrypt := crypto.FromBase64String(value.URL).SetKey("4OToScUFOaeVTrHE").SetIv("9CLGao1vHKqm17Oz").Aes().CBC().PKCS7Padding().Decrypt().ToString()
-	result := fmt.Sprintf("%s%s", strings.ReplaceAll(strings.ReplaceAll(value.Name, "<span style=\"color: red;\">", ""), "</span>", ""), decrypt)
-	return result
-}
+//func (send *Send) getAliDriverUrl(value variable.FileInfo) string {
+//	decrypt := crypto.FromBase64String(value.URL).SetKey("4OToScUFOaeVTrHE").SetIv("9CLGao1vHKqm17Oz").Aes().CBC().PKCS7Padding().Decrypt().ToString()
+//	result := fmt.Sprintf("%s%s", strings.ReplaceAll(strings.ReplaceAll(value.Name, "<span style=\"color: red;\">", ""), "</span>", ""), decrypt)
+//	return result
+//}

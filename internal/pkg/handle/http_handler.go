@@ -21,7 +21,7 @@ import (
 // @param t 泛型参数
 // @return T 泛型返回值
 // @returnType 返回类型 html,json
-func HttpHandler[T any](method string, url string, params map[string]string, t *T, header map[string]string, returnType string, isBrowser bool, fn func(*goquery.Document) []byte) T {
+func HttpHandler[T any](method string, url string, params map[string]string, t *T, header map[string]string, returnType string, isBrowser bool, fn func(*goquery.Document) []byte,isEncry bool,en func([]byte) []byte) T {
 	var respByte []byte
 	var err error
 
@@ -30,16 +30,20 @@ func HttpHandler[T any](method string, url string, params map[string]string, t *
 		client := resty.New().R().SetFormData(params).SetHeaders(header)
 		switch method {
 		case http.MethodGet:
-			result, err = client.Post(url)
+			result, err = client.Get(url)
 			break
 		case http.MethodPost:
-			result, err = client.Get(url)
+			result, err = client.Post(url)
 			break
 		}
 		if err != nil {
 			log.Error("查找资源失败: ", err)
 		} else {
-			respByte = []byte(result.String())
+			results := []byte(result.String())
+			if isEncry {
+				results = en(results)
+			}
+			respByte = results
 		}
 
 	} else {

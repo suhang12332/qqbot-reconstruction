@@ -286,6 +286,27 @@ type AliResult struct {
 		List  []FileInfo `json:"list"`
 	} `json:"data"`
 }
+
+type AliResponse struct {
+	Status string `json:"status"`
+	Msg    string `json:"msg"`
+	Result struct {
+		Items []struct {
+			Title   string `json:"title"`
+			Content []struct {
+				Title string `json:"title"`
+				Geshi string `json:"geshi"`
+				Size  string `json:"size"`
+			} `json:"content"`
+			PageURL       string `json:"page_url"`
+			ID            string `json:"id"`
+			Path          string `json:"path"`
+			AvailableTime string `json:"available_time"`
+			InsertTime    string `json:"insert_time"`
+		} `json:"items"`
+		Count string `json:"count"`
+	} `json:"result"`
+}
 type FileInfo struct {
 	ID          string      `json:"id"`
 	Name        string      `json:"name"`
