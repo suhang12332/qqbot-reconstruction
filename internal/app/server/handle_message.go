@@ -1,10 +1,10 @@
 package server
 
 import (
-	"fmt"
-	"qqbot-reconstruction/internal/pkg/util"
-	"qqbot-reconstruction/internal/pkg/variable"
-	"strings"
+    "fmt"
+    "qqbot-reconstruction/internal/pkg/util"
+    "qqbot-reconstruction/internal/pkg/variable"
+    "strings"
 )
 
 // songMessage
@@ -12,12 +12,12 @@ import (
 // @param info 歌名
 // @return string cq码
 func (send *Send) songMessage(receive *Receive) {
-	song := send.queryCloudSong(strings.Split(receive.RawMessage, " ")[1]).Result
-	if song.SongCount != 0 {
-		res := util.MusicCQ(((song.Songs)[0]).ID, "163")
-		((*send).Params.(*variable.SendMsg)).Message = res
-	}
-	send.sendMessage()
+    song := send.queryCloudSong(strings.Split(receive.RawMessage, " ")[1]).Result
+    if song.SongCount != 0 {
+        res := util.MusicCQ(((song.Songs)[0]).ID, "163")
+        ((*send).Params.(*variable.SendMsg)).Message = res
+    }
+    send.sendMessage()
 }
 
 // aliMessage
@@ -25,46 +25,46 @@ func (send *Send) songMessage(receive *Receive) {
 // @param info 歌名
 // @return string cq码
 func (send *Send) aliMessage(receive *Receive) {
-	aliInfos := send.queryAliDriver(strings.Split(receive.RawMessage, " ")[1]).Result.Items
+    aliInfos := send.queryAliDriver(strings.Split(receive.RawMessage, " ")[1]).Result.Items
 
-	messages := make([]variable.Messages, len(aliInfos)-3)
-	for key, value := range aliInfos {
-		if key <= 2 {
-			continue
-		}
-		result := fmt.Sprintf("%s %s", value.Title,value.PageURL)
-		messages[key-3] = variable.Messages{
-			Type: "node",
-			Data: variable.GroupFowardData{
-				Name:    "阿里云盘搜索结果",
-				Uin:     variable.QQ,
-				Content: result,
-			},
-		}
-	}
-	((*send).Params.(*variable.SendGroupForwardMsg)).Messages = messages
-	send.sendMessage()
+    messages := make([]variable.Messages, len(aliInfos)-3)
+    for key, value := range aliInfos {
+        if key <= 2 {
+            continue
+        }
+        result := fmt.Sprintf("%s %s", value.Title, value.PageURL)
+        messages[key-3] = variable.Messages{
+            Type: "node",
+            Data: variable.GroupFowardData{
+                Name:    "阿里云盘搜索结果",
+                Uin:     variable.QQ,
+                Content: result,
+            },
+        }
+    }
+    ((*send).Params.(*variable.SendPrivateForwardMsg)).Messages = messages
+    send.sendMessage()
 }
 
 func (send *Send) magnetMessage(receive *Receive) {
-	data := send.queryMagnet(strings.Split(receive.RawMessage, " ")[1]).Data
-	messages := make([]variable.Messages, len(data))
-	for key, value := range data {
-		m := value.Magnet
-		replace := strings.Replace(m, `//btsow.click/magnet/detail/hash/`, "", len(m))
-		value := fmt.Sprintf("%s %s", fmt.Sprintf("%s %s", value.Title, value.Size), replace)
-		util.ParseMessage(&value)
-		messages[key] = variable.Messages{
-			Type: "node",
-			Data: variable.GroupFowardData{
-				Name:    "磁力搜索结果",
-				Uin:     variable.QQ,
-				Content: value,
-			},
-		}
-	}
-	((*send).Params.(*variable.SendGroupForwardMsg)).Messages = messages
-	send.sendMessage()
+    data := send.queryMagnet(strings.Split(receive.RawMessage, " ")[1]).Data
+    messages := make([]variable.Messages, len(data))
+    for key, value := range data {
+        m := value.Magnet
+        replace := strings.Replace(m, `//btsow.click/magnet/detail/hash/`, "", len(m))
+        value := fmt.Sprintf("%s %s", fmt.Sprintf("%s %s", value.Title, value.Size), replace)
+        util.ParseMessage(&value)
+        messages[key] = variable.Messages{
+            Type: "node",
+            Data: variable.GroupFowardData{
+                Name:    "磁力搜索结果",
+                Uin:     variable.QQ,
+                Content: value,
+            },
+        }
+    }
+    ((*send).Params.(*variable.SendPrivateForwardMsg)).Messages = messages
+    send.sendMessage()
 }
 
 //func (send *Send) getAliDriverUrl(value variable.FileInfo) string {
