@@ -10,7 +10,6 @@ import (
 func receiveMessage(message string) {
     switch {
     case strings.Contains(message, `post_type":"message"`):
-        fmt.Println(message)
         handleReceiveMessage(message, &Receive{}).execute()
     }
 }
@@ -54,6 +53,6 @@ func (receive *Receive) printfMessage() {
         log.Infof(fmt.Sprintf("收到消息: %s", fmt.Sprintf("'%s'': %s", (*receive).Sender.Nickname, receiveMsg)))
     }
     //插入消息数据
-    //    receive.MessageInsert()
+    receive.MessageInsert()
 
 }
