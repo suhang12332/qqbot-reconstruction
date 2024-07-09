@@ -24,7 +24,7 @@ import (
 // Error function for logging errors
 
 // Fetch is a generic HTTP request handler
-func Fetch[T any](method string, url string, params interface{}, t *T, header map[string]string, returnType string, isBrowser bool, fn func(*goquery.Document) []byte, isEncry bool, en func([]byte) []byte) T {
+func Fetch[T any](method string, url string, params interface{}, t *T, header map[string]string, returnType string, isBrowser bool, fn func(*goquery.Document) []byte, isEncry bool, en func([]byte) []byte) []byte {
     var respByte []byte
     var err error
     var result *req.Response
@@ -38,7 +38,7 @@ func Fetch[T any](method string, url string, params interface{}, t *T, header ma
         case map[string]string:
             r.SetFormData(v)
         default:
-            r.SetBodyJsonString(params.(string))
+            r.SetBody(params.(string))
         }
     }
 
@@ -69,9 +69,11 @@ func Fetch[T any](method string, url string, params interface{}, t *T, header ma
         if err != nil {
             log.Error("返回的信息转换struct失败", err)
         }
+    case variable.BYTE:
+
     default:
         // If the returnType is not recognized, return the raw response bytes
     }
 
-    return *t
+    return respByte
 }

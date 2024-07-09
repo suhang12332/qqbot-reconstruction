@@ -87,4 +87,3 @@ func (receive *Receive) MessageStatistics() string {
     }
     return strings.TrimRight(msg, "\n")
 }
-

@@ -5,6 +5,8 @@ import (
 )
 
 func main() {
+    go func() {
+        server.StartHappyServer()
+    }()
     server.Start()
-
 }

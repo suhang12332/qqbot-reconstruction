@@ -34,6 +34,9 @@ func (receive *Receive) execute() {
         case "资源":
             receive.searchMagnet()
             break
+        case "色图":
+            receive.searchHappy()
+            break
         }
     }
 }

@@ -31,6 +31,13 @@ func (receive *Receive) searchMagnet() {
     receive.initSend(true).magnetMessage(receive)
 }
 
+// searchMagnet
+// @description: 搜索磁力(磁力蛋蛋)
+func (receive *Receive) searchHappy() {
+    receive.initSend(false).happyMessage(receive)
+}
+
+
 // initSend
 // @description: 初始化消息
 func (receive *Receive) initSend(isForward bool) *Send {

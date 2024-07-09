@@ -401,3 +401,7 @@ type SpeechesNumber struct {
     Card  string `json:"card"`
     Count int    `json:"count"`
 }
+
+type Common struct {
+    
+}
