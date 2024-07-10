@@ -64,6 +64,7 @@ func (send *Send) happyMessage(receive *Receive) {
     //            },
     //        }
     //    }
+    //    infos := Infos()
     infos := []string{
         "https://jmtp.mediavorous.com/storage/article/8339/6389e605e983a.jpg",
         "https://jmtp.mediavorous.com/storage/article/8339/6389e6063956e.jpg",
@@ -116,7 +117,7 @@ func (send *Send) happyMessage(receive *Receive) {
         "https://jmtp.mediavorous.com/storage/article/8339/6389e642a2f1e.jpg",
         "https://jmtp.mediavorous.com/storage/article/8339/6389e642a309b.jpg",
         "https://jmtp.mediavorous.com/storage/article/8339/6389e64298a7d.jpg"}
-    for _,value := range infos {
+    for _, value := range infos {
         result := util.PictureCQ(strings.Replace(value, "https://jmtp.mediavorous.com/storage/article", "http://127.0.0.1:8081/happy", 1))
         ((*send).Params.(*variable.SendMsg)).Message = result
         send.sendMessage()

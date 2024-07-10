@@ -19,15 +19,15 @@ var (
     token    string
     userKey  string
 )
+
 func StartHappyServer() {
     http.HandleFunc("/happy/", func(writer http.ResponseWriter, request *http.Request) {
-        urls := strings.Replace(request.URL.Path, "/happy", "https://jmtp.mediavorous.com/storage/article",1)
+        urls := strings.Replace(request.URL.Path, "/happy", "https://jmtp.mediavorous.com/storage/article", 1)
         picture := getPicture(urls)
         writer.Write(picture)
     })
     http.ListenAndServe(":8081", nil)
-    
-    
+
 }
 
 type Lists struct {
@@ -217,7 +217,7 @@ type BootStrap struct {
     } `json:"data"`
 }
 
-func init1() {
+func bootstrap() {
     s := "3VdfumpYOdPYMefD3KoWYNrBfy9tr/gpZpM8gXyqW4Tq3G/Ryy6C4ESq4/GQonY6"
     bytes := post(s, "https://api.xh7x6zhb.com/v2.5/bootstrap")
     strap := BootStrap{}
@@ -318,25 +318,26 @@ func getSign(timex string) string {
     return sign
 }
 func Infos() []string {
+    bootstrap()
     results := make([]string, 0)
     list := getList(1)
-        data := list.Data
-            for _, k := range data {
-                result := getListResult(k.ID, k.Title)
-                for _, v := range result.Data.Chapters {
-                    info := getInfo(v.ID, v.Title)
-                    srcs := parseHtml(info.Data.Content)
-                    for _, l := range srcs {
-                        results = append(results,l) 
-                    }
-                }
+    data := list.Data
+    for _, k := range data {
+        result := getListResult(k.ID, k.Title)
+        for _, v := range result.Data.Chapters {
+            info := getInfo(v.ID, v.Title)
+            srcs := parseHtml(info.Data.Content)
+            for _, l := range srcs {
+                results = append(results, l)
             }
-        return results
+        }
+    }
+    return results
 }
-func getPicture(src string) [] byte {
+func getPicture(src string) []byte {
     resp, _ := http.Get(src)
     defer resp.Body.Close()
     all, _ := io.ReadAll(resp.Body)
     s := crypto.FromBytes(all).SetKey("saIZXc4yMvq0Iz56").SetIv("kbJYtBJUECT0oyjo").Aes().CBC().PKCS7Padding().Decrypt().ToBytes()
-    return s;
+    return s
 }
