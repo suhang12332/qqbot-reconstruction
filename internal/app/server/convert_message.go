@@ -5,7 +5,7 @@ import "qqbot-reconstruction/internal/pkg/variable"
 // ParseTReceive
 // @description: 用于转化客户端结构体,用于数据库入库操作
 // @return: 结果
-func (receive *Receive) ParseTReceive() (*variable.TReceive,*variable.TSender){
+func (receive *Receive) ParseTReceive() (*variable.TReceive, *variable.TSender) {
     sender := (*receive).Sender
     tSender := variable.TSender{
         Age:      (sender).Age,
@@ -30,9 +30,9 @@ func (receive *Receive) ParseTReceive() (*variable.TReceive,*variable.TSender){
         Message:     (*receive).Message,
         MessageSeq:  (*receive).MessageSeq,
         RawMessage:  (*receive).RawMessage,
-        ID: tSender.ID,
-        Font:    (*receive).Font,
-        GroupId: (*receive).GroupId,
+        ID:          tSender.ID,
+        Font:        (*receive).Font,
+        GroupId:     (*receive).GroupId,
     }
-    return &tReceive,&tSender
+    return &tReceive, &tSender
 }

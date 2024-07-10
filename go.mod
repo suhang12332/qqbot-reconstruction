@@ -4,7 +4,9 @@ go 1.21.3
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.1
+	github.com/deatil/go-cryptobin v1.0.2080
 	github.com/fatih/color v1.15.0
+	github.com/go-resty/resty/v2 v2.13.1
 	github.com/imroc/req/v3 v3.43.7
 	github.com/togettoyou/wsc v1.3.1
 	gopkg.in/yaml.v3 v3.0.1
@@ -16,8 +18,6 @@ require (
 	github.com/andybalholm/brotli v1.1.0 // indirect
 	github.com/andybalholm/cascadia v1.3.1 // indirect
 	github.com/cloudflare/circl v1.3.7 // indirect
-	github.com/deatil/go-cryptobin v1.0.2080 // indirect
-	github.com/go-resty/resty/v2 v2.13.1 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/go-task/slim-sprig v0.0.0-20230315185526-52ccab3ef572 // indirect
 	github.com/google/pprof v0.0.0-20240227163752-401108e1b7e7 // indirect
