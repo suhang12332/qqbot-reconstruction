@@ -8,6 +8,7 @@ import (
     "github.com/deatil/go-cryptobin/cryptobin/crypto"
     "github.com/go-resty/resty/v2"
     "io"
+    "math/rand"
     "net/http"
     "strconv"
     "strings"
@@ -314,18 +315,19 @@ func getSign(timex string) string {
 func Infos() []string {
     results := make([]string, 0)
     list := getList(1)
-    data := list.Data
-    for _, k := range data {
-        result := getListResult(k.ID, k.Title)
-        for _, v := range result.Data.Chapters {
-            info := getInfo(v.ID, v.Title)
-            srcs := parseHtml(info.Data.Content)
-            for _, l := range srcs {
-                results = append(results, l)
-            }
+    data := list.Data[rand.Intn(len(list.Data))]
+    l := getListResult(data.ID, data.Title)
+    v := l.Data.Chapters[rand.Intn(len(l.Data.Chapters))]
+    info := getInfo(v.ID, v.Title)
+    srcs := parseHtml(info.Data.Content)
+    for k, l := range srcs {
+        results = append(results, l)
+        if k == 10 {
+            break
         }
     }
     return results
+
 }
 func getPicture(src string) []byte {
     resp, _ := http.Get(src)
