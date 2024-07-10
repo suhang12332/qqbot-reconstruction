@@ -217,9 +217,9 @@ type BootStrap struct {
     } `json:"data"`
 }
 
-func init() {
-    s := "kXnzSuPkvkVcX7LZyEYw7CGTnQfpmyci2tbSVkRMH//SRVnwLed6Q+fS61RJ9pUy/pTF79087CJMgBpzUdw5hSRDKvebhp1XzoLqx9FNuTnj4umklvp9uob8HlFm/6/TPYo4Xa9ssJFRIEsp+UwqjrhXkMvUUv8YzzOI8Iul+Nn/JU4/4Wc6VgrvhgdfnzhOE0/Di0wimDXJfwnDwl2qNry4JN0XPjy2qrDgdraWWUyZWxKeLv6IOFiqHGFy1RVnK5gDM7W4rLdPmx91XTy57XNsdTpg6RseySoLri69sTGSzXsDB5qVQnQvAiDOBeKnSlvLs4kQ9UIa7fhk7AcXB76uodOJDI/nnG1knu7Fpqs="
-    bytes := post(s, "https://api.10cb1c.com/v2.5/bootstrap")
+func bootstrap() {
+    s := "3VdfumpYOdPYMefD3KoWYNrBfy9tr/gpZpM8gXyqW4Tq3G/Ryy6C4ESq4/GQonY6"
+    bytes := post(s, "https://api.xh7x6zhb.com/v2.5/bootstrap")
     strap := BootStrap{}
     json.Unmarshal(bytes, &strap)
     user := strap.Data.User
@@ -242,42 +242,48 @@ func parseHtml(s string) []string {
 }
 func post(body string, url string) []byte {
     client := resty.New()
-    res, err := client.R().SetBody(body).SetHeaders(getHeader(body)).Post(url)
+    res, err := client.SetProxy("http://127.0.0.1:6152").R().SetBody(body).SetHeaders(getHeader(body)).Post(url)
     if err != nil {
         fmt.Println(err)
     }
     return decrypt(res.Body())
 }
 func getInfo(id int, name string) Info {
+    fmt.Println("开始查询:" + name)
     req := fmt.Sprintf("id=%d", id)
     res := encrypt(req)
-    bytes := post(res, "https://api.10cb1c.com/v2.5/article/detail")
+    bytes := post(res, "https://api.xh7x6zhb.com/v2.5/article/detail")
     albumList := Info{}
     json.Unmarshal(bytes, &albumList)
+    fmt.Println("查询:" + name + " 结束")
     return albumList
 }
 func getListResult(id int, name string) Lists {
+    fmt.Println("开始查询:" + name)
     req := fmt.Sprintf("series_id=%d", id)
     res := encrypt(req)
-    bytes := post(res, "https://api.10cb1c.com/v2.5/series/chapters")
+    bytes := post(res, "https://api.xh7x6zhb.com/v2.5/series/chapters")
     albumList := Lists{}
     json.Unmarshal(bytes, &albumList)
+    fmt.Println(fmt.Sprintf("查询到%d条", len(albumList.Data.Chapters)))
     return albumList
 }
 
 func getList(i int) AlbumList {
+    fmt.Println("开始查询list")
     body := fmt.Sprintf("type=0&page=%d&size=31&sort=published_at", i)
     res := encrypt(body)
-    bytes := post(res, "https://api.10cb1c.com/v2.5/series/album/list")
+    bytes := post(res, "https://api.xh7x6zhb.com/v2.5/series/album/list")
     albumList := AlbumList{}
     json.Unmarshal(bytes, &albumList)
+    fmt.Println(fmt.Sprintf("查询到%d条", len(albumList.Data)))
     return albumList
 }
 func encrypt(s string) string {
     return crypto.FromString(s).SetKey("l*bv%Ziq000Biaog").SetIv("8597506002939249").Aes().CBC().PKCS7Padding().Encrypt().ToBase64String()
 }
 func decrypt(s []byte) []byte {
-    return crypto.FromBase64String(string(s)).SetKey("l*bv%Ziq000Biaog").SetIv("8597506002939249").Aes().CBC().PKCS7Padding().Decrypt().ToBytes()
+    return crypto.FromBytes(s).SetKey("l*bv%Ziq000Biaog").SetIv("8597506002939249").Aes().CBC().PKCS7Padding().Decrypt().ToBytes()
 }
 
 func getHeader(s string) map[string]string {
@@ -290,9 +296,9 @@ func getHeader(s string) map[string]string {
         "user-key":        userKey,
         "platform":        "1",
         "sign":            getSign(formatInt),
-        "app-version":     "2.5.2",
+        "app-version":     "2.2.7",
         "Content-Type":    "application/x-www-form-urlencoded; charset=utf-8",
-        "Host":            "api.10cb1c.com",
+        "Host":            "api.xh7x6zhb.com",
         "Connection":      "Keep-Alive",
         "Accept-Encoding": "gzip",
         "token":           token,
@@ -312,6 +318,7 @@ func getSign(timex string) string {
     return sign
 }
 func Infos() []string {
+    bootstrap()
     results := make([]string, 0)
     list := getList(1)
     data := list.Data

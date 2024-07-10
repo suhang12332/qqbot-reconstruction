@@ -64,8 +64,65 @@ func (send *Send) happyMessage(receive *Receive) {
     //            },
     //        }
     //    }
+<<<<<<< HEAD
     infos := Infos()
     for _,value := range infos {
+=======
+    //    infos := Infos()
+    infos := []string{
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e605e983a.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e6063956e.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e605ca89f.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e6054a3c0.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e6050053e.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e604cd29a.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e6056d445.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e605804ab.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e6063032f.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e606db298.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e60698051.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e60659889.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e606b2354.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e606ceb13.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e6071b701.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e626381aa.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e6267f63a.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e625d1eb3.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e625c8919.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e62585c6e.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e625478fa.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e626a90eb.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e626bd454.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e626b16d1.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e625cbd62.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e6269a8f7.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e6279a572.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e626869bf.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e626af6fb.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e626a65d3.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e63366132.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e63392567.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e633a98c0.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e633e1b6b.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e6343b69d.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e634aedb5.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e63497529.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e63470693.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e6345e209.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e6342258f.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e634808cf.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e63416a5c.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e634566a8.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e63492761.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e633dea7a.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e642740ca.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e642ab627.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e6429e28d.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e642a2f1e.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e642a309b.jpg",
+        "https://jmtp.mediavorous.com/storage/article/8339/6389e64298a7d.jpg"}
+    for _, value := range infos {
+>>>>>>> 32ea5837a0801d4c7c011b4ff8a03da643e29310
         result := util.PictureCQ(strings.Replace(value, "https://jmtp.mediavorous.com/storage/article", "http://127.0.0.1:8081/happy", 1))
         ((*send).Params.(*variable.SendMsg)).Message = result
         send.sendMessage()
