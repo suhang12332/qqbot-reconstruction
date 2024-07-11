@@ -7,9 +7,5 @@ import (
     "reflect"
 )
 
-func (r *PluginRegistry)PluginSanner(plugin *variable.PluginInfo)  {
-    r.Register(plugin.Name, reflect.TypeOf(plugins.TestPlugin{}))
-    r.Register(plugin.Name, reflect.TypeOf(plugins.MusicPlugin{}))
-    r.Register(plugin.Name, reflect.TypeOf(plugins.MagnetPlugin{}))
-    r.Register(plugin.Name, reflect.TypeOf(plugins.AliSearchPlugin{}))
+func (r *PluginRegistry)PluginScanner(plugin *variable.PluginInfo)  {
 }
