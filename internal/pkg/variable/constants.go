@@ -6,10 +6,9 @@ const (
 
 	BYTE = "byte"
 
-	QQ = 3271835508
+	QQ = 2292348484
 
-	NORMALESSAGE = "normal"
-	GROUPMESSGAE = "group"
+	NORMALESSAGE   = "normal"
+	GROUPMESSGAE   = "group"
 	PRIVATEMESSAGE = "private"
-
 )
