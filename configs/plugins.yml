@@ -1,0 +1,13 @@
+plugins:
+  - name: test
+    keyword: /早报
+    whitelist: []
+  - name: music
+    keyword: 点歌
+    whitelist: []
+  - name: magnet
+    keyword: 磁力
+    whitelist: []
+  - name: alisearch
+    keyword: 资源
+    whitelist: []
