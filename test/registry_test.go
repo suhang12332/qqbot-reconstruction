@@ -14,10 +14,10 @@ func TestRegister(t *testing.T) {
 	pluginRegistry.Register("music", reflect.TypeOf(plugins.MusicPlugin{}))
 
 	// 创建类型：运行时根据配置文件动态加载插件
-	if imagePlugin, err := pluginRegistry.CreatePlugin("image"); err == nil {
+	if imagePlugin, err := pluginRegistry.CreatePlugin("image", []string{}); err == nil {
 		imagePlugin.GetWhiteList()
 	}
-	if musicPlugin, err := pluginRegistry.CreatePlugin("music"); err == nil {
+	if musicPlugin, err := pluginRegistry.CreatePlugin("music", []string{}); err == nil {
 		musicPlugin.GetWhiteList()
 	}
 }

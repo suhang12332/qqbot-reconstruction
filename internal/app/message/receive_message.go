@@ -42,51 +42,6 @@ type ReceiveMessage struct {
 
 type Receive ReceiveMessage
 
-//// searchSong
-//// @description: 搜索歌曲(网易云)
-//func (receive *Receive) searchSong() {
-//	receive.initSend(false).songMessage(receive)
-//}
-//
-//// searchAli
-//// @description: 搜索云盘(阿里云盘)
-//func (receive *Receive) searchAli() {
-//	receive.initSend(true).aliMessage(receive)
-//}
-//
-//// searchMagnet
-//// @description: 搜索磁力(磁力蛋蛋)
-//func (receive *Receive) searchMagnet() {
-//	receive.initSend(true).magnetMessage(receive)
-//}
-//
-//// searchMagnet
-//// @description: 搜索磁力(磁力蛋蛋)
-//func (receive *Receive) searchHappy() {
-//	receive.initSend(false).happyMessage(receive)
-//}
-
-//func (receive *Receive) execute() {
-//	receive.PrintfMessage()
-//	split := strings.Split(receive.RawMessage, " ")
-//	if len(split) == 2 {
-//		switch split[0] {
-//		case "点歌":
-//			receive.searchSong()
-//			break
-//		case "云盘":
-//			receive.searchAli()
-//			break
-//		case "资源":
-//			receive.searchMagnet()
-//			break
-//		case "色图":
-//			receive.searchHappy()
-//			break
-//		}
-//	}
-//}
-
 // ParseTReceive
 // @description: 用于转化客户端结构体,用于数据库入库操作
 // @return: 结果
