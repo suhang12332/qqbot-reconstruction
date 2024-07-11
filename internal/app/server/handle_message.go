@@ -68,7 +68,7 @@ func (send *Send) happyMessage(receive *Receive) {
     for _, value := range infos {
         result := util.PictureCQ(strings.Replace(value, "https://jmtp.mediavorous.com/storage/article", "http://127.0.0.1:8081/happy", 1))
         ((*send).Params.(*variable.SendMsg)).Message = result
-        if receive.MessageType == "private" {
+        if receive.MessageType == variable.PRIVATEMESSAGE {
             send.sendMessage()
         }
     }
