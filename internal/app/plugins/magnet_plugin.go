@@ -11,13 +11,13 @@ import (
     "strings"
 )
 
-type Magnet struct {
+type MagnetPlugin struct {
     name      string
     status    bool
     whitelist []string
 }
 
-func (m *Magnet) Execute(receive *message.Receive) *message.Send {
+func (m *MagnetPlugin) Execute(receive *message.Receive) *message.Send {
     send := receive.InitSend(true)
     data := m.query(strings.Split(receive.RawMessage, " ")[1]).Data
     messages := make([]variable.Messages, len(data))
@@ -39,15 +39,15 @@ func (m *Magnet) Execute(receive *message.Receive) *message.Send {
     return send
 }
 
-func (m *Magnet) GetWhiteList() []string {
+func (m *MagnetPlugin) GetWhiteList() []string {
     return m.whitelist
 }
 
-func (m *Magnet) SetWhiteList(whiteList []string) {
+func (m *MagnetPlugin) SetWhiteList(whiteList []string) {
     m.whitelist = whiteList
 }
 
-func (m *Magnet) query(info string) variable.MagnetResult {
+func (m *MagnetPlugin) query(info string) variable.MagnetResult {
     urls := fmt.Sprintf(variable.Urls.Magnet, url.QueryEscape(info))
     result := &variable.MagnetResult{}
     api.Fetch(http.MethodGet, urls, nil, result, nil, variable.HTML, false, api.Magnet, false, nil)

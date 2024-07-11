@@ -10,13 +10,13 @@ import (
     "strings"
 )
 
-type AliSearch struct {
+type AliSearchPlugin struct {
     name      string
     status    bool
     whitelist []string
 }
 
-func (a *AliSearch) Execute(receive *message.Receive) *message.Send {
+func (a *AliSearchPlugin) Execute(receive *message.Receive) *message.Send {
     send := receive.InitSend(true)
     aliInfos := a.query(strings.Split(receive.RawMessage, " ")[1]).Result.Items
 
@@ -40,15 +40,15 @@ func (a *AliSearch) Execute(receive *message.Receive) *message.Send {
     return send
 }
 
-func (a *AliSearch) GetWhiteList() []string {
+func (a *AliSearchPlugin) GetWhiteList() []string {
     return a.whitelist
 }
 
-func (a *AliSearch) SetWhiteList(whiteList []string) {
+func (a *AliSearchPlugin) SetWhiteList(whiteList []string) {
     a.whitelist = whiteList
 }
 
-func (a *AliSearch) query(info string) variable.AliResponse {
+func (a *AliSearchPlugin) query(info string) variable.AliResponse {
     urls := fmt.Sprintf(variable.Urls.Ali, url.QueryEscape(info))
     header := make(map[string]string)
     header["Origin"] = "https://www.upyunso.com"
