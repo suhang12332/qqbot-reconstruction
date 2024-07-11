@@ -227,7 +227,6 @@ func init() {
     token = user.Token
     userKey = user.UserKey
     imageUrl = (strap.Data.Domain.Image)[0]
-    fmt.Println(imageUrl)
 }
 
 func parseHtml(s string) []string {

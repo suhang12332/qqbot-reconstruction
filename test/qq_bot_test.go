@@ -8,8 +8,7 @@ import (
 )
 
 func TestLoadConfigs(tt *testing.T) {
-	unescape, _ := url.QueryUnescape("trojan://i79sd&HbL97s%y@los.pasi.cat:443#los.pasi.cat%3A443")
-	fmt.Println(unescape)
+	
 }
 
 type man interface {

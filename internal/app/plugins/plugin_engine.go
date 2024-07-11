@@ -3,7 +3,8 @@ package plugins
 import (
 	"encoding/json"
 	"fmt"
-	"os"
+    "gopkg.in/yaml.v3"
+    "os"
 	"qqbot-reconstruction/internal/app/message"
 	"qqbot-reconstruction/internal/pkg/log"
 	"qqbot-reconstruction/internal/pkg/variable"
@@ -39,7 +40,7 @@ func (e *PluginEngine) Init(path string, registry *PluginRegistry) {
 	}
 
 	var info variable.PluginsConfig
-	err = json.Unmarshal(file, &info)
+	err = yaml.Unmarshal(file, &info)
 	if err != nil {
 		log.Error("配置文件解析失败: ", err)
 		os.Exit(1)
