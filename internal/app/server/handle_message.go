@@ -64,14 +64,17 @@ func (send *Send) happyMessage(receive *Receive) {
     //            },
     //        }
     //    }
-    infos := Infos()
-    for _, value := range infos {
-        result := util.PictureCQ(strings.Replace(value, "https://jmtp.mediavorous.com/storage/article", "http://127.0.0.1:8081/happy", 1))
-        ((*send).Params.(*variable.SendMsg)).Message = result
-        if receive.MessageType == variable.PRIVATEMESSAGE {
-            send.sendMessage()
-        }
-    }
+    //    infos := Infos()
+    ((*send).Params.(*variable.SendMsg)).Message = "节制,注意身体!👊👊👊"
+    send.sendMessage()
+    //    for _, value := range infos {
+    //        result := util.PictureCQ(strings.Replace(value, "https://jmtp.mediavorous.com/storage/article", "http://127.0.0.1:8081/happy", 1))
+    //        ((*send).Params.(*variable.SendMsg)).Message = result
+    //        if receive.MessageType == variable.PRIVATEMESSAGE {
+    //            ((*send).Params.(*variable.SendMsg)).Message = "节制,注意身体!👊👊👊"
+    //            send.sendMessage()
+    //        }
+    //    }
 }
 
 func (send *Send) magnetMessage(receive *Receive) {
