@@ -47,11 +47,3 @@ func GetConfigWd() string {
     dir, _ := os.Getwd()
     return dir + "/../../configs/"
 }
-
-// GetPluginWd
-// @description: 用于获取当前目录
-// @return: 返回当前目录
-func GetPluginWd() string {
-    dir, _ := os.Getwd()
-    return dir + "/../../internal/app/plugins/"
-}
