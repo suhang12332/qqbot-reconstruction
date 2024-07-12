@@ -1,12 +1,11 @@
 package db
 
 import (
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
-	"os"
-	"qqbot-reconstruction/internal/pkg/log"
-	"qqbot-reconstruction/internal/pkg/variable"
+    "gorm.io/driver/mysql"
+    "gorm.io/gorm"
+    "gorm.io/gorm/logger"
+    "log"
+    "qqbot-reconstruction/internal/pkg/variable"
 )
 
 var (
@@ -23,8 +22,7 @@ func DB() *gorm.DB {
 		Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
-		log.Error("数据库链接失败: %s", err)
-		os.Exit(1)
+		log.Fatalf("数据库链接失败: %s", err)
 	}
 	sql, _ := db.DB()
 	sql.SetMaxIdleConns(10)

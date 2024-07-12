@@ -11,6 +11,7 @@ type TestPlugin struct {
 	keyword   string
 	status    bool
 	whitelist []string
+	args  []string
 }
 
 func (t *TestPlugin) SetName(name string) {
@@ -37,6 +38,14 @@ func (t *TestPlugin) SetStatus(status bool) {
 	t.status = status
 }
 
+func (t *TestPlugin) SetArgs(args []string) {
+	t.args = args
+}
+
+func (t *TestPlugin) GetArgs() []string {
+	return t.args
+}
+
 func (t *TestPlugin) Execute(receive *message.Receive) *message.Send {
 	if strings.Split(receive.RawMessage, " ")[1] == "订阅" {
 		send := receive.InitSend(false)
@@ -52,4 +61,8 @@ func (t *TestPlugin) GetWhiteList() []string {
 
 func (t *TestPlugin) SetWhiteList(whiteList []string) {
 	t.whitelist = whiteList
+}
+
+func (t *TestPlugin) Help(receive *message.Receive) *message.Send {
+	return receive.Tips("给傻逼说明一下用法🤭")
 }

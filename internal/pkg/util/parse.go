@@ -42,13 +42,6 @@ func ParseMessage(mes *string) {
     }
 }
 
-func HasKey(key string, slice []string) bool {
-    found := false
-    for _, value := range slice {
-        if value == key {
-            found = true
-            break
-        }
-    }
-    return found
+func TextParseImg(info string) string {
+    return PictureCQ(info)
 }

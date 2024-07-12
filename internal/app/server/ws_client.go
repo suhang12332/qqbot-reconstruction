@@ -27,8 +27,6 @@ func Start() {
 		pluginEngine.Init(cfg, nil)
 	})
 
-	log.Infof("hahah")
-
 	done := make(chan bool)
 	ws = wsc.New(variable.Urls.Ws)
 	// 可自定义配置，不使用默认配置
@@ -48,7 +46,7 @@ func Start() {
 	})
 	// 设置回调处理
 	ws.OnConnected(func() {
-		log.Info("WS链接成功: ", ws.WebSocket.Url)
+		log.Infof("WS链接🤝成功👌")
 		// 连接成功后，测试每30秒发送消息
 		go func() {
 			t := time.NewTicker(30 * time.Second)

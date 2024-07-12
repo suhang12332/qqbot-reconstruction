@@ -3,6 +3,7 @@ package main
 import (
     "fmt"
     "gopkg.in/yaml.v3"
+    "log"
     "os"
     "strings"
     "unicode"
@@ -38,17 +39,13 @@ func init()  {
     dir, _ = os.Getwd()
 }
 func main() {
-    
     file, err := os.ReadFile(dir+"/../../configs/plugins.yml")
     if err != nil {
-        fmt.Println(fmt.Sprintf("plugins配置文件读取失败: "), err)
-        os.Exit(1)
+        log.Fatal("plugins配置文件读取失败: ",err)
     }
     plugin := &PluginsConfig{}
-    err = yaml.Unmarshal(file, plugin)
-    if err != nil {
-        fmt.Println("配置文件解析到struct失败", err)
-        os.Exit(1)
+    if err = yaml.Unmarshal(file,plugin); err!= nil {
+        log.Fatal("配置文件解析到struct失败", err)
     }
     pluginInit(plugin.Plugins)
 }
@@ -71,11 +68,10 @@ func pluginInit(plugins []PluginInfo) {
     builder.WriteString(end)
     result := builder.String()
     // 写入内容
-    _, err = file.WriteString(result)
-    if err != nil {
-        fmt.Println("Error writing to file:", err)
-        return
-    }
+   if  _, err = file.WriteString(result);err!= nil {
+       fmt.Println("Error writing to file:", err)
+       return
+   }
 }
 func camelCase(input string) string {
     var result string

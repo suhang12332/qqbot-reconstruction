@@ -15,6 +15,7 @@ type AliSearchPlugin struct {
 	keyword   string
 	status    bool
 	whitelist []string
+	args  []string
 }
 
 func (a *AliSearchPlugin) SetName(name string) {
@@ -42,9 +43,12 @@ func (a *AliSearchPlugin) SetStatus(status bool) {
 }
 
 func (a *AliSearchPlugin) Execute(receive *message.Receive) *message.Send {
-	send := receive.InitSend(true)
-	aliInfos := a.query(strings.Split(receive.RawMessage, " ")[1]).Result.Items
-
+    args := strings.Split(receive.RawMessage, " ")
+    if len(args) <= 1 {
+        return receive.NoArgsTips()
+    }
+    send := receive.InitSend(true)
+	aliInfos := a.query(args[1]).Result.Items
 	messages := make([]variable.Messages, len(aliInfos)-3)
 	for key, value := range aliInfos {
 		if key <= 2 {
@@ -61,7 +65,6 @@ func (a *AliSearchPlugin) Execute(receive *message.Receive) *message.Send {
 		}
 	}
 	((*send).Params.(*variable.SendPrivateForwardMsg)).Messages = messages
-
 	return send
 }
 
@@ -73,6 +76,13 @@ func (a *AliSearchPlugin) SetWhiteList(whiteList []string) {
 	a.whitelist = whiteList
 }
 
+func (a *AliSearchPlugin) SetArgs(args []string) {
+	a.args = args
+}
+
+func (a *AliSearchPlugin) GetArgs() []string {
+	return a.args
+}
 func (a *AliSearchPlugin) query(info string) variable.AliResponse {
 	urls := fmt.Sprintf(variable.Urls.Ali, url.QueryEscape(info))
 	header := make(map[string]string)
@@ -83,4 +93,8 @@ func (a *AliSearchPlugin) query(info string) variable.AliResponse {
 	result := &variable.AliResponse{}
 	api.Fetch(http.MethodGet, urls, nil, result, header, variable.JSON, false, nil, true, api.DecodeBase64)
 	return *result
+}
+
+func (a *AliSearchPlugin) Help(receive *message.Receive) *message.Send {
+	return receive.Tips("给傻逼说明一下用法🤭")
 }
