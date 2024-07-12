@@ -1,4 +1,4 @@
-package plugins
+package commons
 
 import (
 	"fmt"

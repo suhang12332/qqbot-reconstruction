@@ -41,3 +41,14 @@ func ParseMessage(mes *string) {
         *mes = res
     }
 }
+
+func HasKey(key string, slice []string) bool {
+    found := false
+    for _, value := range slice {
+        if value == key {
+            found = true
+            break
+        }
+    }
+    return found
+}

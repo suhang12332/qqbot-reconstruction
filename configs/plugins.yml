@@ -8,6 +8,6 @@ plugins:
   - name: magnet
     keyword: 磁力
     whitelist: []
-  - name: alisearch
+  - name: ali_search
     keyword: 资源
     whitelist: []

@@ -10,6 +10,7 @@ import (
     "io"
     "math/rand"
     "net/http"
+    "qqbot-reconstruction/internal/pkg/log"
     "strconv"
     "strings"
     "time"
@@ -244,7 +245,7 @@ func post(body string, url string) []byte {
     client := resty.New()
     res, err := client.R().SetBody(body).SetHeaders(getHeader(body)).Post(url)
     if err != nil {
-        fmt.Println(err)
+        log.Error("",err)
     }
     return decrypt(res.Body())
 }

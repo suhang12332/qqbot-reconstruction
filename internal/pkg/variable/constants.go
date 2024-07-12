@@ -1,14 +1,16 @@
 package variable
 
 const (
-	HTML = "html"
-	JSON = "json"
+    HTML = "html"
+    JSON = "json"
 
-	BYTE = "byte"
+    BYTE = "byte"
 
-	QQ = 2292348484
+    QQ = 2292348484
 
-	NORMALESSAGE   = "normal"
-	GROUPMESSGAE   = "group"
-	PRIVATEMESSAGE = "private"
+    NORMALESSAGE   = "normal"
+    GROUPMESSGAE   = "group"
+    PRIVATEMESSAGE = "private"
+
+    
 )

@@ -3,11 +3,9 @@ package server
 import (
     "fmt"
     "github.com/togettoyou/wsc"
-    "os"
-    "qqbot-reconstruction/internal/app/plugins"
+    "qqbot-reconstruction/internal/app/commons"
     "qqbot-reconstruction/internal/pkg/log"
     "qqbot-reconstruction/internal/pkg/variable"
-    "reflect"
     "time"
 )
 
@@ -17,9 +15,9 @@ var ws *wsc.Wsc
 // @description: ws配置
 func Start() {
     // 加载注册表
-    wd, _ := os.Getwd()
+    result := variable.ReadConfigs(variable.GetConfigWd()+"plugins.yml", &variable.PluginsConfig{})
     // 加载插件
-    pluginEngine := initPluginEngine(wd + "/../../configs/plugins.yml")
+    pluginEngine := initPluginEngine(result)
 
     done := make(chan bool)
     ws = wsc.New(variable.Urls.Ws)
@@ -94,20 +92,16 @@ func SendQMessage(send *string) {
     }
 }
 
-func initPluginRegistry() *plugins.PluginRegistry {
-    pluginRegistry := plugins.NewPluginRegistry()
-    // 插件注册
-    pluginRegistry.Register("test", reflect.TypeOf(plugins.TestPlugin{}))
-    pluginRegistry.Register("music", reflect.TypeOf(plugins.MusicPlugin{}))
-    pluginRegistry.Register("magnet", reflect.TypeOf(plugins.Magnet{}))
-    pluginRegistry.Register("alisearch", reflect.TypeOf(plugins.AliSearch{}))
-
+func initPluginRegistry(plugins []variable.PluginInfo) *commons.PluginRegistry {
+    pluginRegistry := commons.NewPluginRegistry()
+    // 插件自动扫描
+    pluginRegistry.PluginScanner(plugins)
     return pluginRegistry
 }
 
-func initPluginEngine(path string) *plugins.PluginEngine {
-    pluginEngine := plugins.NewPluginEngine()
-    pluginEngine.Init(path, initPluginRegistry())
+func initPluginEngine(plugins *variable.PluginsConfig) *commons.PluginEngine {
+    pluginEngine := commons.NewPluginEngine()
+    pluginEngine.Init(plugins, initPluginRegistry(plugins.Plugins))
 
     return pluginEngine
 }
