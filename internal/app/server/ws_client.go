@@ -93,11 +93,9 @@ func SendQMessage(send *string) {
 }
 
 func initPluginRegistry(plugins []variable.PluginInfo) *commons.PluginRegistry {
-
     pluginRegistry := commons.NewPluginRegistry()
-    // 插件注册
+    // 插件自动扫描
     pluginRegistry.PluginScanner(plugins)
-
     return pluginRegistry
 }
 
