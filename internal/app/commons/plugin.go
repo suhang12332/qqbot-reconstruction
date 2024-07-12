@@ -6,7 +6,12 @@ import (
 
 type Plugin interface {
 	Execute(receive *message.Receive) *message.Send
+	GetKeyword() string
+	SetKeyword(keyword string)
 	GetWhiteList() []string
 	SetWhiteList(whiteList []string)
-	Help(receive *message.Receive) *message.Send
+	GetStatus() bool
+	SetStatus(status bool)
+	GetName() string
+	SetName(name string)
 }

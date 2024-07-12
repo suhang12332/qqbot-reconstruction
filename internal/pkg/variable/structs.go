@@ -367,6 +367,7 @@ type Common struct {
 type PluginInfo struct {
 	Name      string
 	Keyword   string
+	Status    bool
 	Whitelist []string
 }
 

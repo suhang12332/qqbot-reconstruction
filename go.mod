@@ -6,6 +6,7 @@ require (
 	github.com/PuerkitoBio/goquery v1.8.1
 	github.com/deatil/go-cryptobin v1.0.2080
 	github.com/fatih/color v1.17.0
+	github.com/fsnotify/fsnotify v1.7.0
 	github.com/go-resty/resty/v2 v2.13.1
 	github.com/imroc/req/v3 v3.43.7
 	github.com/togettoyou/wsc v1.3.1
