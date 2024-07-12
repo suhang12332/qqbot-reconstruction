@@ -2,6 +2,7 @@ package commons
 
 import (
 	"fmt"
+	"qqbot-reconstruction/internal/pkg/variable"
 	"reflect"
 )
 
@@ -26,11 +27,14 @@ func (r *PluginRegistry) Register(name string, typ reflect.Type) {
 	r.count++
 }
 
-func (r *PluginRegistry) CreatePlugin(name string, whitelist []string) (Plugin, error) {
+func (r *PluginRegistry) CreatePlugin(name string, info *variable.PluginInfo) (Plugin, error) {
 	if typ, ok := r.registry[name]; ok {
 		instance := reflect.New(typ).Interface()
 		if plg, ok := instance.(Plugin); ok {
-			plg.SetWhiteList(whitelist)
+			plg.SetName(info.Name)
+			plg.SetStatus(info.Status)
+			plg.SetKeyword(info.Keyword)
+			plg.SetWhiteList(info.Whitelist)
 			return plg, nil
 		} else {
 			return nil, fmt.Errorf("插件%s错误", name)
