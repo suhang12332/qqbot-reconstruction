@@ -10,9 +10,11 @@ import (
 )
 
 var (
+    Help []string
     Urls    *ApiUrl
     Actions *Action
     once    sync.Once
+
 )
 
 // ReadConfigs
@@ -37,6 +39,7 @@ func init() {
     once.Do(func() {
         Actions = ReadConfigs(GetConfigWd()+"api.yaml", &Action{})
         Urls = ReadConfigs(GetConfigWd()+"url.yaml", &ApiUrl{})
+        Help = []string{"help","帮助","例子","事例","用法","说明","手册"}
     })
 }
 

@@ -17,8 +17,9 @@ type AliSearchPlugin struct {
 }
 
 func (a *AliSearchPlugin) Execute(receive *message.Receive) *message.Send {
+    info := strings.Split(receive.RawMessage, " ")[1]
     send := receive.InitSend(true)
-    aliInfos := a.query(strings.Split(receive.RawMessage, " ")[1]).Result.Items
+    aliInfos := a.query(info).Result.Items
 
     messages := make([]variable.Messages, len(aliInfos)-3)
     for key, value := range aliInfos {
@@ -37,6 +38,12 @@ func (a *AliSearchPlugin) Execute(receive *message.Receive) *message.Send {
     }
     ((*send).Params.(*variable.SendPrivateForwardMsg)).Messages = messages
 
+    return send
+}
+
+func (a *AliSearchPlugin) Help(receive *message.Receive) *message.Send {
+    send := receive.InitSend(false)
+    ((*send).Params.(*variable.SendMsg)).Message = "给傻逼说明一下用法🤭"
     return send
 }
 

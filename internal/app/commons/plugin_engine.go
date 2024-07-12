@@ -5,6 +5,7 @@ import (
     "fmt"
     "qqbot-reconstruction/internal/app/message"
     "qqbot-reconstruction/internal/pkg/log"
+    "qqbot-reconstruction/internal/pkg/util"
     "qqbot-reconstruction/internal/pkg/variable"
     "strconv"
     "strings"
@@ -55,6 +56,11 @@ func (e *PluginEngine) HandleMessage(msg string) *string {
             wl := plugin.GetWhiteList()
             if len(wl) != 0 && !in(strconv.Itoa(rcv.UserID), wl) {
                 return nil
+            }
+            if len(split) > 1 && util.HasKey(split[1],variable.Help) {
+                if rv := plugin.Help(rcv); rv != nil {
+                    return send2res(rv)
+                }
             }
             if rv := plugin.Execute(rcv); rv != nil {
                 return send2res(rv)

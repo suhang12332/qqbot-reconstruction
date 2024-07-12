@@ -42,6 +42,11 @@ func (m *MagnetPlugin) Execute(receive *message.Receive) *message.Send {
 func (m *MagnetPlugin) GetWhiteList() []string {
     return m.whitelist
 }
+func (a *MagnetPlugin) Help(receive *message.Receive) *message.Send {
+    send := receive.InitSend(false)
+    ((*send).Params.(*variable.SendMsg)).Message = "给傻逼说明一下用法🤭"
+    return send
+}
 
 func (m *MagnetPlugin) SetWhiteList(whiteList []string) {
     m.whitelist = whiteList
