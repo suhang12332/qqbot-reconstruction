@@ -96,9 +96,7 @@ func initPluginRegistry(plugins []variable.PluginInfo) *commons.PluginRegistry {
 
     pluginRegistry := commons.NewPluginRegistry()
     // 插件注册
-    for _, plugin := range plugins {
-        pluginRegistry.PluginScanner(&plugin)
-    }
+    pluginRegistry.PluginScanner(plugins)
 
     return pluginRegistry
 }

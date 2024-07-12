@@ -11,7 +11,7 @@ color_echo() {
 # 获取当前时间
 current_time=$(date +"%Y年%m月%d日%H时%M分%S秒")
 info="[info] [$current_time]"
-go run ../server/generate.go
+go run generate.go
 color_echo "${info} 插件注册文件生成成功!👍"
 color_echo "${info} 开始启动qqbot🚀"
 go run ../server/server.go

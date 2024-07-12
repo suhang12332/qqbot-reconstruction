@@ -18,7 +18,7 @@ import (
     "reflect"
 )
 
-func (r *PluginRegistry)PluginScanner(plugin *variable.PluginInfo)  {
+func (r *PluginRegistry)PluginScanner(plugin []variable.PluginInfo)  {
 `
     end = `}`
     dir string
@@ -64,9 +64,9 @@ func pluginInit(plugins []PluginInfo) {
     defer file.Close()
     var builder strings.Builder
     builder.WriteString(head)
-    for _, plugin := range plugins {
+    for key, plugin := range plugins {
         camelCase := camelCase(plugin.Name) + "Plugin"
-        builder.WriteString(fmt.Sprintf("    r.Register(plugin.Name, reflect.TypeOf(plugins.%s{}))\n", camelCase))
+        builder.WriteString(fmt.Sprintf("    r.Register(plugin[%d].Name, reflect.TypeOf(plugins.%s{}))\n", key,camelCase))
     }
     builder.WriteString(end)
     result := builder.String()

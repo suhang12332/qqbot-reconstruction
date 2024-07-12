@@ -6,7 +6,6 @@ import (
     "net/url"
     "qqbot-reconstruction/internal/app/message"
     "qqbot-reconstruction/internal/pkg/api"
-    "qqbot-reconstruction/internal/pkg/util"
     "qqbot-reconstruction/internal/pkg/variable"
     "strings"
 )
@@ -24,8 +23,8 @@ func (m *MusicPlugin) Execute(receive *message.Receive) *message.Send {
     song := query(strings.Split(receive.RawMessage, " ")[1]).Result
     if song.SongCount != 0 {
         // [CQ:music,type=custom,url=http://baidu.com,audio=http://baidu.com/1.mp3,title=音乐标题]
-        res := util.MusicCQ(((song.Songs)[0]).ID, ((song.Songs)[0]).Name)
-        ((*send).Params.(*variable.SendMsg)).Message = res
+//        res := util.MusicCQ(((song.Songs)[0]).ID, ((song.Songs)[0]).Name)
+        ((*send).Params.(*variable.SendMsg)).Message = "res"
         return send
     }
 
