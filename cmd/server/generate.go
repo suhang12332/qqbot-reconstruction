@@ -18,7 +18,7 @@ import (
     "reflect"
 )
 
-func (r *PluginRegistry)PluginSanner(plugin *variable.PluginInfo)  {
+func (r *PluginRegistry)PluginScanner(plugin *variable.PluginInfo)  {
 `
     end = `}`
     dir string
