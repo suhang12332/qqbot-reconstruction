@@ -309,6 +309,13 @@ type SendPrivateForwardMsg struct {
     Messages []Messages `json:"messages"`
 }
 
+// SendGroupForwardMsg
+// @description: 私聊消息发送
+type SendGroupForwardMsg struct {
+    GroupID   int        `json:"group_id"`
+    Messages []Messages `json:"messages"`
+}
+
 // MagnetResult
 // @description: 磁力信息结构体
 type MagnetResult struct {

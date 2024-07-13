@@ -7,14 +7,14 @@ plugins:
   - name: music
     keyword: /点歌
     args: []
-    whitelist: []
+    whitelist: ["1552899301"]
     status: true
   - name: magnet
-    keyword: /磁力
+    keyword: /资源
     whitelist: []
     status: true
   - name: ali_search
-    keyword: /资源
+    keyword: /云盘
     whitelist: []
     status: true
 #  - name: picture_search

@@ -2,7 +2,7 @@ package commons
 
 import (
 	"fmt"
-	"qqbot-reconstruction/internal/pkg/variable"
+    "qqbot-reconstruction/internal/pkg/variable"
 	"reflect"
 )
 

@@ -54,7 +54,7 @@ func (e *PluginEngine) Init(plugins *variable.PluginsConfig, registry *PluginReg
 
             if plugin == nil { // 插件未加载 直接创建实例
                 if err := e.loadPlugin(&info); err != nil {
-                    log.Error(fmt.Sprintf("加载%s插件失败", info.Name), err)
+                    log.Errorf(fmt.Sprintf("加载%s插件失败: %v",info.Name,err))
                     continue
                 }
                 loadCount++
@@ -80,12 +80,12 @@ func (e *PluginEngine) Init(plugins *variable.PluginsConfig, registry *PluginReg
     for _, v := range plugins.Plugins {
         v.Status = true
         if err := e.loadPlugin(&v); err != nil {
-            log.Error(fmt.Sprintf("加载%s插件失败", v.Name), err)
+            log.Errorf(fmt.Sprintf("加载%s插件失败: %v", v.Name,err))
             continue
         }
     }
 
-    log.Info("已加载的插件个数", strconv.Itoa(int(e.count)))
+    log.Info("已加载的插件个数: %s", strconv.Itoa(int(e.count)))
 }
 
 func (e *PluginEngine) loadPlugin(info *variable.PluginInfo) error {
@@ -109,19 +109,20 @@ func (e *PluginEngine) HandleMessage(msg string) *string {
         split := strings.Split(rcv.RawMessage, " ")
         if plugin, loaded := e.pluginRepository[split[0]]; loaded {
             wl := plugin.GetWhiteList()
-			// 校验白名单
+
+            // 校验白名单
             if len(wl) != 0 && !util.In(strconv.Itoa(rcv.UserID), wl) {
                 return message.Send2res(rcv.NoPermissionsTips())
             }
             if len(split) > 1 {
 				// 校验帮助
-                if util.HasKey(split[1], variable.Help) {
+                if util.In(split[1], variable.Help) {
                     if rv := plugin.Help(rcv); rv != nil {
                         return message.Send2res(rv)
                     }
                 }
 				// 校验参数
-                if len(plugin.GetArgs())!= 0 && !util.HasKey(split[1],plugin.GetArgs()) {
+                if len(plugin.GetArgs())!= 0 && !util.In(split[1],plugin.GetArgs()) {
 					return message.Send2res(rcv.NoArgsTips())
                 }
             }
@@ -136,7 +137,7 @@ func (e *PluginEngine) HandleMessage(msg string) *string {
 func (e *PluginEngine) SetStatus(name string, status bool) {
     plugin, loaded := e.pluginRepository[name]
     if !loaded {
-        log.Errorf(fmt.Sprintf("插件%s不存在", name))
+        log.Error("插件%s不存在", name)
     }
 
     if plugin.GetStatus() != status {
@@ -148,7 +149,7 @@ func (e *PluginEngine) SetStatus(name string, status bool) {
 func (e *PluginEngine) SetArgs(name string, args []string, mode string) {
     plugin, loaded := e.pluginRepository[name]
     if !loaded {
-        log.Errorf(fmt.Sprintf("插件%s不存在", name))
+        log.Error("插件%s不存在", name)
     }
 
     wl := plugin.GetArgs()
@@ -169,7 +170,7 @@ func (e *PluginEngine) SetArgs(name string, args []string, mode string) {
 func (e *PluginEngine) SetWhiteList(name string, whiteList []string, mode string) {
     plugin, loaded := e.pluginRepository[name]
     if !loaded {
-        log.Errorf(fmt.Sprintf("插件%s不存在", name))
+        log.Error("插件%s不存在", name)
     }
 
     wl := plugin.GetWhiteList()
@@ -186,8 +187,6 @@ func (e *PluginEngine) SetWhiteList(name string, whiteList []string, mode string
         }
     }
 }
-
-
 
 func updatePlugin(plugin *Plugin, info *variable.PluginInfo) bool {
     // 更新插件信息
@@ -210,5 +209,3 @@ func updatePlugin(plugin *Plugin, info *variable.PluginInfo) bool {
     }
     return updated
 }
-
-

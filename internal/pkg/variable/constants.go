@@ -6,7 +6,7 @@ const (
 
 	BYTE = "byte"
 
-	QQ = 2292348484
+	QQ = 635129639
 
 	NORMALESSAGE   = "normal"
 	GROUPMESSGAE   = "group"

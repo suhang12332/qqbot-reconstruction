@@ -7,7 +7,7 @@ import (
 	"qqbot-reconstruction/internal/pkg/variable"
 )
 
-// Sender
+// SenderMessage
 // @description: 用户信息结构体
 type SenderMessage struct {
 	Age      int    `json:"age"`
