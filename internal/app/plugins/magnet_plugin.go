@@ -16,6 +16,7 @@ type MagnetPlugin struct {
 	keyword   string
 	status    bool
 	whitelist []string
+	args  []string
 }
 
 func (m *MagnetPlugin) SetName(name string) {
@@ -41,10 +42,20 @@ func (m *MagnetPlugin) GetStatus() bool {
 func (m *MagnetPlugin) SetStatus(status bool) {
 	m.status = status
 }
+func (m *MagnetPlugin) SetArgs(args []string) {
+	m.args = args
+}
 
+func (m *MagnetPlugin) GetArgs() []string {
+	return m.args
+}
 func (m *MagnetPlugin) Execute(receive *message.Receive) *message.Send {
+	args := strings.Split(receive.RawMessage, " ")
+    if len(args) <= 1 {
+        return receive.NoArgsTips()
+    }
 	send := receive.InitSend(true)
-	data := m.query(strings.Split(receive.RawMessage, " ")[1]).Data
+	data := m.query(args[1]).Data
 	messages := make([]variable.Messages, len(data))
 	for key, value := range data {
 		m := value.Magnet
@@ -68,9 +79,7 @@ func (m *MagnetPlugin) GetWhiteList() []string {
 	return m.whitelist
 }
 func (m *MagnetPlugin) Help(receive *message.Receive) *message.Send {
-	send := receive.InitSend(false)
-	((*send).Params.(*variable.SendMsg)).Message = "给傻逼说明一下用法🤭"
-	return send
+	return receive.Tips("给傻逼说明一下用法🤭")
 }
 
 func (m *MagnetPlugin) SetWhiteList(whiteList []string) {

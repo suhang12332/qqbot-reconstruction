@@ -1,17 +1,23 @@
 plugins:
   - name: test
     keyword: /早报
+    args: ["订阅","退订"]
     whitelist: ["2292348488"]
     status: true
   - name: music
-    keyword: 点歌
+    keyword: /点歌
+    args: []
     whitelist: []
     status: true
   - name: magnet
-    keyword: 磁力
+    keyword: /磁力
     whitelist: []
     status: true
   - name: ali_search
-    keyword: 资源
+    keyword: /资源
     whitelist: []
     status: true
+#  - name: picture_search
+#    keyword: 图片
+#    whitelist: []
+#    status: true

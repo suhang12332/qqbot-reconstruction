@@ -1,7 +1,7 @@
 package message
 
 import (
-	"fmt"
+    "fmt"
 	"qqbot-reconstruction/internal/app/db"
 	"qqbot-reconstruction/internal/pkg/log"
 	"qqbot-reconstruction/internal/pkg/variable"

@@ -65,8 +65,7 @@ func Fetch[T any](method string, url string, params interface{}, t *T, header ma
         doc := util.ParseHtml(reader)
         respByte = fn(doc)
     case variable.JSON:
-        err = json.Unmarshal(respByte, t)
-        if err != nil {
+        if err = json.Unmarshal(respByte, t);err!= nil {
             log.Error("返回的信息转换struct失败", err)
         }
     case variable.BYTE:

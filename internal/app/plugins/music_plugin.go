@@ -16,6 +16,7 @@ type MusicPlugin struct {
 	keyword   string
 	status    bool
 	whitelist []string
+	args  []string
 }
 
 func (m *MusicPlugin) SetName(name string) {
@@ -42,10 +43,21 @@ func (m *MusicPlugin) SetStatus(status bool) {
 	m.status = status
 }
 
-func (m *MusicPlugin) Execute(receive *message.Receive) *message.Send {
-	send := receive.InitSend(false)
+func (m *MusicPlugin) SetArgs(args []string) {
+	m.args = args
+}
 
-	song := query(strings.Split(receive.RawMessage, " ")[1]).Result
+func (m *MusicPlugin) GetArgs() []string {
+	return m.args
+}
+
+func (m *MusicPlugin) Execute(receive *message.Receive) *message.Send {
+	args := strings.Split(receive.RawMessage, " ")
+    if len(args) <= 1 {
+        return receive.NoArgsTips()
+    }
+	send := receive.InitSend(false)
+	song := query(args[1]).Result
 	if song.SongCount != 0 {
 		// [CQ:music,type=custom,url=http://baidu.com,audio=http://baidu.com/1.mp3,title=音乐标题]
 		res := util.MusicCQ(((song.Songs)[0]).ID, ((song.Songs)[0]).Name)
@@ -71,4 +83,7 @@ func query(info string) variable.CloudSong {
 	result := &variable.CloudSong{}
 	api.Fetch(http.MethodGet, urls, nil, result, header, variable.JSON, false, nil, false, nil)
 	return *result
+}
+func (m *MusicPlugin) Help(receive *message.Receive) *message.Send {
+	return receive.Tips("给傻逼说明一下用法🤭")
 }

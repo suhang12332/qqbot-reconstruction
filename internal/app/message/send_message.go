@@ -1,7 +1,10 @@
 package message
 
 import (
+    "encoding/json"
+    "qqbot-reconstruction/internal/pkg/log"
     "qqbot-reconstruction/internal/pkg/variable"
+    "strings"
 )
 
 // SendMessage
@@ -13,14 +16,6 @@ type SendMessage struct {
 }
 
 type Send SendMessage
-
-// initSend
-// @description: 初始化消息
-func (receive *Receive) initSend(isForward bool) *Send {
-    send := Send{}
-    send.assembleMessage(isForward, receive)
-    return &send
-}
 
 func (receive *Receive) InitSend(isForward bool) *Send {
     send := Send{}
@@ -46,4 +41,31 @@ func (send *Send) assembleMessage(isForward bool, receive *Receive) *Send {
     }
 
     return send
+}
+func (receive *Receive) Tips(info string) *Send {
+    send := receive.InitSend(false)
+    ((*send).Params.(*variable.SendMsg)).Message = info
+    return send
+}
+func (receive *Receive) NoPermissionsTips() *Send {
+    return receive.Tips(variable.Tips.Info.NoPermissions)
+}
+
+func (receive *Receive) NoArgsTips() *Send {
+    return receive.Tips(variable.Tips.Info.NoArgs)
+}
+
+func Send2res(send *Send) *string {
+    marshal, err := json.Marshal(send)
+    switch send.Action {
+    case variable.Actions.SendMsg:
+        log.Info("回复消息: ", strings.ReplaceAll((*send).Params.(*variable.SendMsg).Message, "\n", "\t"))
+    }
+    if err != nil {
+        log.Error("消息回复失败: ", err)
+    }
+    result := string(marshal)
+    log.Infof(result)
+
+    return &result
 }
