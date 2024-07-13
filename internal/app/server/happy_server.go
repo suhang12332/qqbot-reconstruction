@@ -245,7 +245,7 @@ func post(body string, url string) []byte {
     client := resty.New()
     res, err := client.R().SetBody(body).SetHeaders(getHeader(body)).Post(url)
     if err != nil {
-        log.Error("",err)
+        log.Error("%v",err)
     }
     return decrypt(res.Body())
 }

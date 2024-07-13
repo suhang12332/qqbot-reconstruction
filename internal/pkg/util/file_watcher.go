@@ -1,18 +1,17 @@
 package util
 
 import (
-	"fmt"
 	"github.com/fsnotify/fsnotify"
-	"log"
 	"math"
-	"sync"
+    "qqbot-reconstruction/internal/pkg/log"
+    "sync"
 	"time"
 )
 
 func WatchFile(path string, handler func(e fsnotify.Event)) {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
-		log.Fatal(fmt.Errorf("无法监听配置文件： %s", path))
+		log.Fatal("无法监听配置文件：%s", path)
 	}
 	defer watcher.Close()
 
@@ -20,7 +19,7 @@ func WatchFile(path string, handler func(e fsnotify.Event)) {
 
 	err = watcher.Add(path)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("%s",err.Error())
 	}
 
 	<-make(chan interface{})
@@ -66,7 +65,7 @@ func watchLoop(w *fsnotify.Watcher, handler func(e fsnotify.Event)) {
 			if !ok {
 				return
 			}
-			log.Println("Watcher error:", err)
+			log.Error("Watcher error: %v", err)
 		}
 	}
 }

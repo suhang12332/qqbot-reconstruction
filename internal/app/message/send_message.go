@@ -27,8 +27,8 @@ func (receive *Receive) InitSend(isForward bool) *Send {
 // @description: 组装消息
 func (send *Send) assembleMessage(isForward bool, receive *Receive) *Send {
     if isForward {
-        send.Params = &variable.SendPrivateForwardMsg{
-            UserID: variable.QQ,
+        send.Params = &variable.SendGroupForwardMsg{
+            GroupID: variable.QQ,
         }
         send.Action = variable.Actions.SendGroupForwardMsg
     } else {

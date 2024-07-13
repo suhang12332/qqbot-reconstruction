@@ -1,21 +1,5 @@
 package util
 
-
-
-func HasKey(key string, slice []string) bool {
-    found := false
-    for _, value := range slice {
-        if value == key {
-            found = true
-            break
-        }
-    }
-    return found
-}
-
-
-
-
 func In(target string, arr []string) bool {
     for _, element := range arr {
         if target == element {

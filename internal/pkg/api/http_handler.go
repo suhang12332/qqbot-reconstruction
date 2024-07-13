@@ -48,11 +48,11 @@ func Fetch[T any](method string, url string, params interface{}, t *T, header ma
     case http.MethodPost:
         result, err = r.Post(url)
     default:
-        log.Error("无效的HTTP方法", errors.New("invalid HTTP method"))
+        log.Error("无效的HTTP方法: %v", errors.New("invalid HTTP method"))
     }
 
     if err != nil {
-        log.Error("查找资源失败: ", err)
+        log.Error("查找资源失败: %v", err)
     }
 
     respByte = result.Bytes()
@@ -66,7 +66,7 @@ func Fetch[T any](method string, url string, params interface{}, t *T, header ma
         respByte = fn(doc)
     case variable.JSON:
         if err = json.Unmarshal(respByte, t);err!= nil {
-            log.Error("返回的信息转换struct失败", err)
+            log.Error("返回的信息转换struct失败: %v", err)
         }
     case variable.BYTE:
 

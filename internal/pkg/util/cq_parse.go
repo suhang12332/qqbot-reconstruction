@@ -33,3 +33,7 @@ func ReplyCQ(mid int, qq int, id int, msg string) string {
     all := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(msg, "&", "&amp;"), "[", "&#91;"), "]", "&#93;"), ",", "&#44;")
     return fmt.Sprintf("[CQ:reply,id=%d][CQ:at,qq=%d][CQ:at,qq=%d]%s", mid, qq, qq, all)
 }
+
+func UrlCQ(url string, title string) string {
+    return fmt.Sprintf("[CQ:share,url=%s,title=%s]", url, title)
+}

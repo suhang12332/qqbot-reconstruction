@@ -3,8 +3,8 @@ package variable
 import (
     "fmt"
     "gopkg.in/yaml.v3"
-    logger "log"
     "os"
+    "qqbot-reconstruction/internal/pkg/log"
     "qqbot-reconstruction/internal/pkg/util"
     "reflect"
     "sync"
@@ -24,10 +24,10 @@ var (
 func ReadConfigs[T any](path string, t *T) *T {
     file, err := os.ReadFile(path)
     if err != nil {
-        logger.Fatal(fmt.Sprintf("%s配置文件读取失败: ", reflect.TypeOf(t).String()), err)
+        log.Fatalf(fmt.Sprintf("%s配置文件读取失败: %v", reflect.TypeOf(t).String(),err))
     }
     if err = yaml.Unmarshal(file, t); err != nil {
-        logger.Fatal("配置文件解析到struct失败", err)
+        log.Fatal("配置文件解析到struct失败: %v", err)
     }
     return t
 }

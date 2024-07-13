@@ -1,7 +1,8 @@
 package server
 
 import (
-	"fmt"
+    "errors"
+    "fmt"
 	"github.com/fsnotify/fsnotify"
 	"github.com/togettoyou/wsc"
 	"qqbot-reconstruction/internal/app/commons"
@@ -13,7 +14,7 @@ import (
 
 var ws *wsc.Wsc
 
-// WS
+// Start
 // @description: ws配置
 func Start() {
 	// 加载注册表
@@ -62,17 +63,17 @@ func Start() {
 		}()
 	})
 	ws.OnConnectError(func(err error) {
-		log.Error("WS链接失败: ", err.Error())
+		log.Error("WS链接失败: %s", err.Error())
 	})
 	ws.OnDisconnected(func(err error) {
-		log.Info("WS断开链接: ", err.Error())
+		log.Info("WS断开链接: %s", err.Error())
 	})
 	ws.OnClose(func(code int, text string) {
 		log.Infof(fmt.Sprintf("WS关闭: %d,%s", code, text))
 		done <- true
 	})
 	ws.OnSentError(func(err error) {
-		log.Error("回复失败: ", err.Error())
+		log.Error("回复失败: %s", err.Error())
 	})
 	ws.OnTextMessageReceived(func(message string) {
 		//receiveMessage(message)
@@ -95,7 +96,7 @@ func Start() {
 // @param message 消息
 func SendQMessage(send *string) {
 	err := ws.SendTextMessage(*send)
-	if err == wsc.CloseErr {
+	if errors.Is(err, wsc.CloseErr) {
 		return
 	}
 }
