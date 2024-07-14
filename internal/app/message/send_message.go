@@ -4,6 +4,7 @@ import (
     "encoding/json"
     "fmt"
     "qqbot-reconstruction/internal/pkg/log"
+    "qqbot-reconstruction/internal/pkg/util"
     "qqbot-reconstruction/internal/pkg/variable"
     "strings"
 )
@@ -50,11 +51,14 @@ func (send *Send) assembleMessage(isForward bool, receive *Receive) *Send {
         }
         send.Action = variable.Actions.SendMsg
     }
-
+    
     return send
 }
 func (receive *Receive) Tips(info string) *Send {
     send := receive.InitSend(false)
+    if receive.MessageType == variable.GROUPMESSGAE {
+        info = util.ALtCQ(receive.UserID,info)
+    }
     ((*send).Params.(*variable.SendMsg)).Message = info
     return send
 }
