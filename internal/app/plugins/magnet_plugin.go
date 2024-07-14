@@ -17,6 +17,7 @@ type MagnetPlugin struct {
 	status    bool
 	whitelist []string
 	args  []string
+	scope []string
 }
 const magnetResult = "磁力搜索结果"
 func (m *MagnetPlugin) SetName(name string) {
@@ -87,6 +88,13 @@ func (m *MagnetPlugin) Help(receive *message.Receive) *message.Send {
 
 func (m *MagnetPlugin) SetWhiteList(whiteList []string) {
 	m.whitelist = whiteList
+}
+func (m *MagnetPlugin) SetScope(scope []string) {
+    m.scope = scope
+}
+
+func (m *MagnetPlugin) GetScope() []string {
+    return m.scope
 }
 
 func (m *MagnetPlugin) query(info string) (variable.MagnetResult,bool) {

@@ -2,6 +2,7 @@ package message
 
 import (
     "encoding/json"
+    "fmt"
     "qqbot-reconstruction/internal/pkg/log"
     "qqbot-reconstruction/internal/pkg/variable"
     "strings"
@@ -57,6 +58,11 @@ func (receive *Receive) Tips(info string) *Send {
     ((*send).Params.(*variable.SendMsg)).Message = info
     return send
 }
+
+func (receive *Receive) ScopeTips(name string,scope string) *Send {
+
+    return receive.Tips(fmt.Sprintf(`"%s"功能仅在中使用%s中使用`, name, ParseMessageType(scope)))
+}
 func (receive *Receive) NoPermissionsTips() *Send {
     return receive.Tips(variable.Tips.Info.NoPermissions)
 }
@@ -85,4 +91,26 @@ func Send2res(send *Send) *string {
     result := string(marshal)
 
     return &result
+}
+
+func (send *Send) ForwardMsg(data []variable.Messages) {
+    switch (*send).Action {
+    case variable.Actions.SendGroupForwardMsg:
+        ((*send).Params.(*variable.SendGroupForwardMsg)).Messages = data
+        break
+    case variable.Actions.SendPrivateForwardMsg:
+        ((*send).Params.(*variable.SendPrivateForwardMsg)).Messages = data
+        break
+    }
+}
+
+func ParseMessageType(info string) string {
+    switch info {
+    case variable.PRIVATEMESSAGE:
+        return variable.PRIVATEMESSAGEZH
+    case variable.GROUPMESSGAE:
+        return variable.GROUPMESSGAEZH
+    default:
+        return variable.UNKNOWNMESSAGEZH
+    }
 }
