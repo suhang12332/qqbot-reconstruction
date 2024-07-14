@@ -3,7 +3,6 @@ package commons
 import (
 	"encoding/json"
 	"fmt"
-	"qqbot-reconstruction/internal/app/db"
 	"qqbot-reconstruction/internal/app/message"
 	"qqbot-reconstruction/internal/pkg/log"
 	"qqbot-reconstruction/internal/pkg/util"
@@ -17,8 +16,6 @@ type PluginEngine struct {
 	pluginRegistry *PluginRegistry
 	// 插件实例	keyword-object
 	pluginRepository map[string]Plugin
-	// 数据库
-	db *db.DB
 	// 加载的插件计数
 	count int32
 }
@@ -31,13 +28,9 @@ func NewPluginEngine() *PluginEngine {
 	}
 }
 
-func (e *PluginEngine) Init(plugins *variable.PluginsConfig, registry *PluginRegistry, database *db.DB) {
+func (e *PluginEngine) Init(plugins *variable.PluginsConfig, registry *PluginRegistry) {
 	if registry != nil {
 		e.pluginRegistry = registry
-	}
-
-	if database != nil {
-		e.db = database
 	}
 
 	if e.count > 0 {
@@ -112,7 +105,7 @@ func (e *PluginEngine) HandleMessage(msg string) *string {
 		if err := json.Unmarshal([]byte(msg), rcv); err != nil {
 			log.Errorf("接收消息转换失败!")
 		}
-		rcv.PrintfMessage(e.db)
+		rcv.PrintfMessage()
 		split := strings.Split(rcv.RawMessage, " ")
 		if plugin, loaded := e.pluginRepository[split[0]]; loaded {
 			wl := plugin.GetWhiteList()
@@ -139,6 +132,10 @@ func (e *PluginEngine) HandleMessage(msg string) *string {
 		}
 	}
 	return nil
+}
+
+func (e *PluginEngine) handleSubscribeMessage(receive *message.Receive) {
+
 }
 
 func (e *PluginEngine) SetStatus(name string, status bool) {

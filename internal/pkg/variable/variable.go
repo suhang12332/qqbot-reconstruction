@@ -51,6 +51,6 @@ func init() {
 // @description: 用于获取当前目录
 // @return: 返回当前目录
 func GetConfigWd() string {
-	dir, _ := os.Getwd()
-	return dir + "/configs/"
+	//dir, _ := os.Getwd()
+	return "E:/Projects/qqbot-reconstruction/configs/"
 }

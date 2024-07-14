@@ -77,7 +77,7 @@ func (receive *Receive) ParseTReceive() (*variable.TReceive, *variable.TSender) 
 	return &tReceive, &tSender
 }
 
-func (receive *Receive) PrintfMessage(db *db.DB) {
+func (receive *Receive) PrintfMessage() {
 	receiveMsg := (*receive).RawMessage
 	if (*receive).MessageType == variable.GROUPMESSGAE {
 		groupId := (*receive).GroupId
@@ -93,5 +93,5 @@ func (receive *Receive) PrintfMessage(db *db.DB) {
 	}
 	//插入消息数据
 	tReceive, tSender := receive.ParseTReceive()
-	db.InsertMessage(tReceive, tSender)
+	db.Database.InsertMessage(tReceive, tSender)
 }

@@ -54,6 +54,8 @@ type ApiUrl struct {
 	OpenAiMessage string
 	OPenAiPhoto   string
 	Verb          string
+	Gpt           string
+	GptKey        string
 }
 
 // SendMsg
@@ -266,6 +268,27 @@ type AliResponse struct {
 		Count string `json:"count"`
 	} `json:"result"`
 }
+type GPTResponse struct {
+	Id      string `json:"id"`
+	Object  string `json:"object"`
+	Created int    `json:"created"`
+	Model   string `json:"model"`
+	Choices []struct {
+		Index   int `json:"index"`
+		Message struct {
+			Role    string `json:"role"`
+			Content string `json:"content"`
+		} `json:"message"`
+		Logprobs     interface{} `json:"logprobs"`
+		FinishReason string      `json:"finish_reason"`
+	} `json:"choices"`
+	Usage struct {
+		PromptTokens     int `json:"prompt_tokens"`
+		CompletionTokens int `json:"completion_tokens"`
+		TotalTokens      int `json:"total_tokens"`
+	} `json:"usage"`
+	SystemFingerprint interface{} `json:"system_fingerprint"`
+}
 type FileInfo struct {
 	ID          string      `json:"id"`
 	Name        string      `json:"name"`
@@ -443,7 +466,12 @@ type Tip struct {
 }
 
 type DialogHistory struct {
-	Time       string
+	Time       int64
 	RawMessage string
 	Card       string
+}
+
+type Period struct {
+	Begin int64
+	End   int64
 }

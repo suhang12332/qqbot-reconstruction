@@ -11,13 +11,16 @@ plugins:
     status: true
   - name: magnet
     keyword: /资源
+    args: []
     whitelist: []
     status: true
   - name: ali_search
     keyword: /云盘
+    args: []
     whitelist: []
     status: true
-#  - name: picture_search
-#    keyword: 图片
-#    whitelist: []
-#    status: true
+  - name: gpt_summary
+    keyword: /总结
+    args: []
+    whitelist: []
+    status: true
