@@ -2,5 +2,7 @@ messagetype: text
 info:
    noargs: "🫵命令错误,请查看帮助!"
    nopermissions: "🫵没有使用权限!"
+   noresults: "🫵啥也没找到!"
+   requestfail: "😤资源查找失败!"
         
         

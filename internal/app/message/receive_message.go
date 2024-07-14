@@ -79,7 +79,7 @@ func (receive *Receive) ParseTReceive() (*variable.TReceive, *variable.TSender) 
 
 func (receive *Receive) PrintfMessage() {
 	receiveMsg := (*receive).RawMessage
-	if (*receive).MessageType == "group" {
+	if (*receive).MessageType == variable.GROUPMESSGAE {
 		groupId := (*receive).GroupId
 		if groupId != 0 {
 			card := (*receive).Sender.Card

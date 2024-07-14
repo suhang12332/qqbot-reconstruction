@@ -4,7 +4,6 @@ import (
     "fmt"
     "log"
     "os"
-    "runtime"
     "time"
 )
 
@@ -53,13 +52,7 @@ func (cl *ColorLogger) Log(level int, color string, prefix string, v ...interfac
         cl.logger.Output(2, fmt.Sprintf("%s%s%s", color, fmt.Sprint(v...), Reset))
     }
 }
-func (cl *ColorLogger) getCallerFileName() string {
-	_, file, line, ok := runtime.Caller(2) // Adjust the number based on your call stack depth
-	if !ok {
-		file = "???"
-	}
-	return fmt.Sprintf("%s%s%s:%d", Purple, file, Reset, line)
-}
+
 
 // Fatal 方法用于记录致命错误并终止程序执行
 func (cl *ColorLogger) Fatal(color string, format string, v ...interface{}) {

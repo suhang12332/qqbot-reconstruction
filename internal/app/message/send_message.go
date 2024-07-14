@@ -27,10 +27,20 @@ func (receive *Receive) InitSend(isForward bool) *Send {
 // @description: 组装消息
 func (send *Send) assembleMessage(isForward bool, receive *Receive) *Send {
     if isForward {
-        send.Params = &variable.SendGroupForwardMsg{
-            GroupID: variable.QQ,
+        switch receive.MessageType {
+        case variable.PRIVATEMESSAGE:
+            send.Params = &variable.SendPrivateForwardMsg{
+                UserID: receive.UserID,
+            }
+            send.Action = variable.Actions.SendPrivateForwardMsg
+            break
+        case variable.GROUPMESSGAE:
+            send.Params = &variable.SendGroupForwardMsg{
+                GroupID: receive.GroupId,
+            }
+            send.Action = variable.Actions.SendGroupForwardMsg
+            break
         }
-        send.Action = variable.Actions.SendGroupForwardMsg
     } else {
         send.Params = &variable.SendMsg{
             MessageType: receive.MessageType,
@@ -53,6 +63,14 @@ func (receive *Receive) NoPermissionsTips() *Send {
 
 func (receive *Receive) NoArgsTips() *Send {
     return receive.Tips(variable.Tips.Info.NoArgs)
+}
+
+func (receive *Receive) NoResults() *Send {
+    return receive.Tips(variable.Tips.Info.NoResults)
+}
+
+func (receive *Receive) RequestFail() *Send {
+    return receive.Tips(variable.Tips.Info.RequestFail)
 }
 
 func Send2res(send *Send) *string {

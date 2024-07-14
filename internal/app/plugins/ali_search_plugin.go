@@ -19,6 +19,8 @@ type AliSearchPlugin struct {
     args      []string
 }
 
+const aliDriver = "阿里云盘搜索结果"
+
 func (a *AliSearchPlugin) SetName(name string) {
     a.name = name
 }
@@ -49,24 +51,31 @@ func (a *AliSearchPlugin) Execute(receive *message.Receive) *message.Send {
         return receive.NoArgsTips()
     }
     send := receive.InitSend(true)
-    aliInfos := a.query(args[1]).Result.Items
-    messages := make([]variable.Messages, len(aliInfos)-4)
-    for key, value := range aliInfos {
-        if key <= 3 {
-            continue
+    if result, b := a.query(args[1]); b {
+        aliInfos := result.Result.Items
+        if len(aliInfos) <= 4 {
+            return receive.NoResults()
         }
-//        result := fmt.Sprintf("%s %s", value.Title, value.PageURL)
-        messages[key-4] = variable.Messages{
-            Type: "node",
-            Data: variable.GroupFowardData{
-                Name:    "阿里云盘搜索结果",
-                Uin:     variable.QQ,
-                Content: util.UrlCQ(value.PageURL,value.Title),
-            },
+        messages := make([]variable.Messages, len(aliInfos)-4)
+
+        for key, value := range aliInfos {
+            if key <= 3 {
+                continue
+            }
+            result := fmt.Sprintf("%s %s", value.Title, value.PageURL)
+            messages[key-4] = variable.Messages{
+                Type: variable.NODE,
+                Data: variable.GroupFowardData{
+                    Name:    aliDriver,
+                    Uin:     receive.UserID,
+                    Content: result,
+                },
+            }
         }
+        ((*send).Params.(*variable.SendPrivateForwardMsg)).Messages = messages
+        return send
     }
-    ((*send).Params.(*variable.SendGroupForwardMsg)).Messages = messages
-    return send
+    return receive.RequestFail()
 }
 
 func (a *AliSearchPlugin) GetWhiteList() []string {
@@ -84,16 +93,15 @@ func (a *AliSearchPlugin) SetArgs(args []string) {
 func (a *AliSearchPlugin) GetArgs() []string {
     return a.args
 }
-func (a *AliSearchPlugin) query(info string) variable.AliResponse {
+func (a *AliSearchPlugin) query(info string) (variable.AliResponse,bool) {
     urls := fmt.Sprintf(variable.Urls.Ali, url.QueryEscape(info))
     header := make(map[string]string)
     header["Origin"] = "https://www.upyunso.com"
     header["Referer"] = "https://www.upyunso.com/"
     header["User-Agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2.1 Safari/605.1.15"
     header["Host"] = "upapi.juapp9.com"
-    result := &variable.AliResponse{}
-    api.Fetch(http.MethodGet, urls, nil, result, header, variable.JSON, false, nil, true, api.DecodeBase64)
-    return *result
+    _, v, b := api.Fetch(http.MethodGet, urls, nil, &variable.AliResponse{}, header, variable.JSON, false, nil, true, api.DecodeBase64)
+    return *v, b
 }
 
 func (a *AliSearchPlugin) Help(receive *message.Receive) *message.Send {

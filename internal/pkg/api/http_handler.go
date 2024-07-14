@@ -24,8 +24,7 @@ import (
 // Error function for logging errors
 
 // Fetch is a generic HTTP request handler
-func Fetch[T any](method string, url string, params interface{}, t *T, header map[string]string, returnType string, isBrowser bool, fn func(*goquery.Document) []byte, isEncry bool, en func([]byte) []byte) []byte {
-    var respByte []byte
+func Fetch[T any](method string, url string, params interface{}, t *T, header map[string]string, returnType string, isBrowser bool, fn func(*goquery.Document) []byte, isEncry bool, en func([]byte) []byte) ([]byte, *T, bool) {
     var err error
     var result *req.Response
     client := req.C()
@@ -50,12 +49,11 @@ func Fetch[T any](method string, url string, params interface{}, t *T, header ma
     default:
         log.Error("无效的HTTP方法: %v", errors.New("invalid HTTP method"))
     }
-
     if err != nil {
-        log.Error("查找资源失败: %v", err)
+        log.Error("查找资源失败: %s",err.Error())
+        return nil, t, false
     }
-
-    respByte = result.Bytes()
+    respByte := result.Bytes()
     if isEncry && en != nil {
         respByte = en(respByte)
     }
@@ -65,14 +63,13 @@ func Fetch[T any](method string, url string, params interface{}, t *T, header ma
         doc := util.ParseHtml(reader)
         respByte = fn(doc)
     case variable.JSON:
-        if err = json.Unmarshal(respByte, t);err!= nil {
+        if err = json.Unmarshal(respByte, t); err != nil {
             log.Error("返回的信息转换struct失败: %v", err)
+            return nil, t, false
         }
-    case variable.BYTE:
-
     default:
         // If the returnType is not recognized, return the raw response bytes
     }
 
-    return respByte
+    return respByte,t, true
 }
