@@ -72,7 +72,7 @@ func (a *AliSearchPlugin) Execute(receive *message.Receive) *message.Send {
                 },
             }
         }
-        ((*send).Params.(*variable.SendPrivateForwardMsg)).Messages = messages
+        send.ForwardMsg(messages)
         return send
     }
     return receive.RequestFail()

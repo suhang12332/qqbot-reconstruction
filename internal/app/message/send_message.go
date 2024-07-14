@@ -86,3 +86,14 @@ func Send2res(send *Send) *string {
 
     return &result
 }
+
+func (send *Send) ForwardMsg(data []variable.Messages) {
+    switch (*send).Action {
+    case variable.Actions.SendGroupForwardMsg:
+        ((*send).Params.(*variable.SendGroupForwardMsg)).Messages = data
+        break
+    case variable.Actions.SendPrivateForwardMsg:
+        ((*send).Params.(*variable.SendPrivateForwardMsg)).Messages = data
+        break
+    }
+}

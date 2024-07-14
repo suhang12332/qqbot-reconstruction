@@ -56,23 +56,23 @@ func (h *HappyPlugin) Execute(receive *message.Receive) *message.Send {
     }
     length, err := strconv.Atoi(args[1])
     if err != nil {
-		return receive.NoArgsTips()
+        return receive.NoArgsTips()
     }
     send := receive.InitSend(true)
     if result, b := server.Infos(length); b {
         messages := make([]variable.Messages, len(result))
         for key, value := range result {
-            
+
             messages[key] = variable.Messages{
                 Type: variable.NODE,
                 Data: variable.GroupFowardData{
                     Name:    magnetResult,
                     Uin:     receive.UserID,
-                    Content: util.PictureCQ(strings.Replace(value,`https://jmtp.mediavorous.com/storage/article`,`http:127.0.0.1:8081/happy`,1)),
+                    Content: util.PictureCQ(strings.Replace(value, `https://jmtp.mediavorous.com/storage/article`, `http:127.0.0.1:8081/happy`, 1)),
                 },
             }
         }
-        ((*send).Params.(*variable.SendPrivateForwardMsg)).Messages = messages
+        send.ForwardMsg(messages)
         return send
     }
     return receive.RequestFail()
