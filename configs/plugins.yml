@@ -2,22 +2,33 @@ plugins:
   - name: test
     keyword: /早报
     args: ["订阅","退订"]
+    scope: []
     whitelist: ["2292348488"]
     status: true
   - name: music
     keyword: /点歌
     args: []
+    scope: []
     whitelist: ["1552899301"]
     status: true
   - name: magnet
     keyword: /资源
     args: []
     whitelist: []
+    args: []
+    scope: []
     status: true
   - name: ali_search
     keyword: /云盘
-    args: []
     whitelist: []
+    args: []
+    scope: []
+    status: true
+  - name: happy
+    keyword: /色图
+    whitelist: ["1552899301"]
+    args: []
+    scope: ["private"]
     status: true
   - name: gpt_summary
     keyword: /总结

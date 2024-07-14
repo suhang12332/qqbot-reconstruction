@@ -1,4 +1,4 @@
-package server
+package client
 
 import (
 	"errors"
@@ -9,7 +9,8 @@ import (
 	"qqbot-reconstruction/internal/pkg/log"
 	"qqbot-reconstruction/internal/pkg/util"
 	"qqbot-reconstruction/internal/pkg/variable"
-	"time"
+    "strings"
+    "time"
 )
 
 var ws *wsc.Wsc
@@ -75,11 +76,17 @@ func Start() {
 	ws.OnSentError(func(err error) {
 		log.Error("回复失败: %s", err.Error())
 	})
-	ws.OnTextMessageReceived(func(message string) {
-		//receiveMessage(message)
-		if rv := pluginEngine.HandleMessage(message); rv != nil {
-			SendQMessage(rv)
-		}
+    ws.OnTextMessageReceived(func(message string) {
+		go func() {
+			if strings.Contains(message, `post_type":"message"`) {
+				if rv := pluginEngine.HandleMessage(message); rv != nil {
+					SendQMessage(rv)
+				}
+			}
+
+			// 实现其他功能
+		}()
+
 	})
 	go ws.Connect()
 	for {

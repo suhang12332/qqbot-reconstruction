@@ -219,7 +219,7 @@ type BootStrap struct {
     } `json:"data"`
 }
 
-func initb() {
+func init() {
     s := "kXnzSuPkvkVcX7LZyEYw7CGTnQfpmyci2tbSVkRMH//SRVnwLed6Q+fS61RJ9pUy/pTF79087CJMgBpzUdw5hSRDKvebhp1XzoLqx9FNuTnj4umklvp9uob8HlFm/6/TPYo4Xa9ssJFRIEsp+UwqjrhXkMvUUv8YzzOI8Iul+Nn/JU4/4Wc6VgrvhgdfnzhOE0/Di0wimDXJfwnDwl2qNry4JN0XPjy2qrDgdraWWUyZWxKeLv6IOFiqHGFy1RVnK5gDM7W4rLdPmx91XTy57XNsdTpg6RseySoLri69sTGSzXsDB5qVQnQvAiDOBeKnSlvLs4kQ9UIa7fhk7AcXB76uodOJDI/nnG1knu7Fpqs="
     bytes := post(s, "https://api.10cb1c.com/v2.5/bootstrap")
     strap := BootStrap{}
@@ -312,22 +312,33 @@ func getSign(timex string) string {
     sign := fmt.Sprintf("%x", md5.Sum([]byte(sprintf)))
     return sign
 }
-func Infos() []string {
-    initb()
+func Infos(length int) ([]string,bool) {
     results := make([]string, 0)
-    list := getList(1)
+    list := getList(rand.Intn(5)+1)
+    if len(list.Data) == 0 {
+        return nil,false
+    }
     data := list.Data[rand.Intn(len(list.Data))]
     l := getListResult(data.ID, data.Title)
+    if len(l.Data.Chapters)== 0 {
+        return nil,false
+    }
     v := l.Data.Chapters[rand.Intn(len(l.Data.Chapters))]
     info := getInfo(v.ID, v.Title)
+    if info.Data.Content == "" {
+        return nil,false
+    }
     srcs := parseHtml(info.Data.Content)
+    if len(srcs)== 0 {
+        return nil,false
+    }
     for k, l := range srcs {
         results = append(results, l)
-        if k == 10 {
+        if k == length {
             break
         }
     }
-    return results
+    return results,true
 
 }
 func getPicture(src string) []byte {

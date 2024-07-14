@@ -17,6 +17,7 @@ type MusicPlugin struct {
     status    bool
     whitelist []string
     args      []string
+    scope     []string
 }
 
 func (m *MusicPlugin) SetName(name string) {
@@ -65,7 +66,7 @@ func (m *MusicPlugin) Execute(receive *message.Receive) *message.Send {
             ((*send).Params.(*variable.SendMsg)).Message = res
             return send
         }
-		return receive.NoResults()
+        return receive.NoResults()
     }
     return receive.RequestFail()
 }
@@ -76,6 +77,13 @@ func (m *MusicPlugin) GetWhiteList() []string {
 
 func (m *MusicPlugin) SetWhiteList(whiteList []string) {
     m.whitelist = whiteList
+}
+func (m *MusicPlugin) SetScope(scope []string) {
+    m.scope = scope
+}
+
+func (m *MusicPlugin) GetScope() []string {
+    return m.scope
 }
 
 func (m *MusicPlugin) query(info string) (variable.CloudSong, bool) {

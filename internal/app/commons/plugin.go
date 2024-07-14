@@ -16,5 +16,7 @@ type Plugin interface {
     SetName(name string)
     SetArgs(args []string)
     GetArgs() []string
+    SetScope(args []string)
+    GetScope() []string
     Help(receive *message.Receive) *message.Send
 }

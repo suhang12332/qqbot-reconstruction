@@ -36,6 +36,7 @@ func (r *PluginRegistry) CreatePlugin(name string, info *variable.PluginInfo) (P
 			plg.SetKeyword(info.Keyword)
 			plg.SetWhiteList(info.Whitelist)
 			plg.SetArgs(info.Args)
+			plg.SetScope(info.Scope)
 			return plg, nil
 		} else {
 			return nil, fmt.Errorf("插件%s错误", name)
