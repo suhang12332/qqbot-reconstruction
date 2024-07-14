@@ -22,6 +22,16 @@ type GptSummaryPlugin struct {
 	status    bool
 	whitelist []string
 	args      []string
+	scope     []string
+}
+
+func (g *GptSummaryPlugin) SetScope(args []string) {
+	g.scope = args
+}
+
+func (g *GptSummaryPlugin) GetScope() []string {
+	//TODO implement me
+	return g.scope
 }
 
 func (g *GptSummaryPlugin) SetArgs(args []string) {

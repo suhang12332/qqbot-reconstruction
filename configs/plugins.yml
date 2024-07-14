@@ -15,7 +15,6 @@ plugins:
     keyword: /资源
     args: []
     whitelist: []
-    args: []
     scope: []
     status: true
   - name: ali_search
@@ -32,6 +31,7 @@ plugins:
     status: true
   - name: gpt_summary
     keyword: /总结
-    args: []
-    whitelist: []
+    args: [ ]
+    whitelist: [ ]
+    scope: []
     status: true
