@@ -54,7 +54,7 @@ func (e *PluginEngine) Init(plugins *variable.PluginsConfig, registry *PluginReg
 
             if plugin == nil { // 插件未加载 直接创建实例
                 if err := e.loadPlugin(&info); err != nil {
-                    log.Errorf(fmt.Sprintf("加载%s插件失败: %v",info.Name,err))
+                    log.Errorf(fmt.Sprintf("加载%s插件失败: %v", info.Name, err))
                     continue
                 }
                 loadCount++
@@ -80,7 +80,7 @@ func (e *PluginEngine) Init(plugins *variable.PluginsConfig, registry *PluginReg
     for _, v := range plugins.Plugins {
         v.Status = true
         if err := e.loadPlugin(&v); err != nil {
-            log.Errorf(fmt.Sprintf("加载%s插件失败: %v", v.Name,err))
+            log.Errorf(fmt.Sprintf("加载%s插件失败: %v", v.Name, err))
             continue
         }
     }
@@ -93,48 +93,46 @@ func (e *PluginEngine) loadPlugin(info *variable.PluginInfo) error {
     if err != nil {
         return err
     }
-    log.Infof("插件:" +info.Name + "  指令:" + info.Keyword)
+    log.Infof("插件:" + info.Name + "  指令:" + info.Keyword)
     e.pluginRepository[info.Keyword] = plugin
     e.count++
     return nil
 }
 
 func (e *PluginEngine) HandleMessage(msg string) *string {
-    if strings.Contains(msg, `post_type":"message"`) {
-        rcv := &message.Receive{}
-        if err :=json.Unmarshal([]byte(msg), rcv); err!= nil {
-            log.Errorf("接收消息转换失败!")
+    rcv := &message.Receive{}
+    if err := json.Unmarshal([]byte(msg), rcv); err != nil {
+        log.Errorf("接收消息转换失败!")
+    }
+    rcv.PrintfMessage()
+    split := strings.Split(rcv.RawMessage, " ")
+    if plugin, loaded := e.pluginRepository[split[0]]; loaded {
+        wl := plugin.GetWhiteList()
+
+        // 校验白名单
+        if len(wl) != 0 && !util.In(strconv.Itoa(rcv.UserID), wl) {
+            return message.Send2res(rcv.NoPermissionsTips())
         }
-        rcv.PrintfMessage()
-        split := strings.Split(rcv.RawMessage, " ")
-        if plugin, loaded := e.pluginRepository[split[0]]; loaded {
-            wl := plugin.GetWhiteList()
+        sc := plugin.GetScope()
+        // 校验指令范围
+        if len(sc) != 0 && !util.In(rcv.MessageType, sc) {
+            return message.Send2res(rcv.ScopeTips(plugin.GetKeyword(), sc[0]))
+        }
 
-            // 校验白名单
-            if len(wl) != 0 && !util.In(strconv.Itoa(rcv.UserID), wl) {
-                return message.Send2res(rcv.NoPermissionsTips())
-            }
-            sc := plugin.GetScope()
-            // 校验指令范围
-            if len(sc) != 0 && !util.In(rcv.MessageType, sc) {
-                return message.Send2res(rcv.ScopeTips(plugin.GetKeyword(),sc[0]))
-            }
-
-            if len(split) > 1 {
-				// 校验帮助
-                if util.In(split[1], variable.Help) {
-                    if rv := plugin.Help(rcv); rv != nil {
-                        return message.Send2res(rv)
-                    }
-                }
-				// 校验参数
-                if len(plugin.GetArgs())!= 0 && !util.In(split[1],plugin.GetArgs()) {
-					return message.Send2res(rcv.NoArgsTips())
+        if len(split) > 1 {
+            // 校验帮助
+            if util.In(split[1], variable.Help) {
+                if rv := plugin.Help(rcv); rv != nil {
+                    return message.Send2res(rv)
                 }
             }
-            if rv := plugin.Execute(rcv); rv != nil {
-                return message.Send2res(rv)
+            // 校验参数
+            if len(plugin.GetArgs()) != 0 && !util.In(split[1], plugin.GetArgs()) {
+                return message.Send2res(rcv.NoArgsTips())
             }
+        }
+        if rv := plugin.Execute(rcv); rv != nil {
+            return message.Send2res(rv)
         }
     }
     return nil
