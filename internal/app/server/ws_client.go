@@ -1,11 +1,12 @@
 package server
 
 import (
-    "errors"
-    "fmt"
+	"errors"
+	"fmt"
 	"github.com/fsnotify/fsnotify"
 	"github.com/togettoyou/wsc"
 	"qqbot-reconstruction/internal/app/commons"
+	"qqbot-reconstruction/internal/app/db"
 	"qqbot-reconstruction/internal/pkg/log"
 	"qqbot-reconstruction/internal/pkg/util"
 	"qqbot-reconstruction/internal/pkg/variable"
@@ -21,11 +22,11 @@ func Start() {
 	path := variable.GetConfigWd() + "plugins.yml"
 	result := variable.ReadConfigs(path, &variable.PluginsConfig{})
 	// 加载插件
-	pluginEngine := initPluginEngine(result)
+	pluginEngine := initPluginEngine(result, db.NewDB())
 	// 热加载
 	go util.WatchFile(path, func(e fsnotify.Event) {
 		cfg := variable.ReadConfigs(path, &variable.PluginsConfig{})
-		pluginEngine.Init(cfg, nil)
+		pluginEngine.Init(cfg, nil, nil)
 	})
 
 	done := make(chan bool)
@@ -108,9 +109,9 @@ func initPluginRegistry(plugins []variable.PluginInfo) *commons.PluginRegistry {
 	return pluginRegistry
 }
 
-func initPluginEngine(plugins *variable.PluginsConfig) *commons.PluginEngine {
+func initPluginEngine(plugins *variable.PluginsConfig, database *db.DB) *commons.PluginEngine {
 	pluginEngine := commons.NewPluginEngine()
-	pluginEngine.Init(plugins, initPluginRegistry(plugins.Plugins))
+	pluginEngine.Init(plugins, initPluginRegistry(plugins.Plugins), database)
 
 	return pluginEngine
 }

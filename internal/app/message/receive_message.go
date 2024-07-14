@@ -1,7 +1,7 @@
 package message
 
 import (
-    "fmt"
+	"fmt"
 	"qqbot-reconstruction/internal/app/db"
 	"qqbot-reconstruction/internal/pkg/log"
 	"qqbot-reconstruction/internal/pkg/variable"
@@ -77,7 +77,7 @@ func (receive *Receive) ParseTReceive() (*variable.TReceive, *variable.TSender) 
 	return &tReceive, &tSender
 }
 
-func (receive *Receive) PrintfMessage() {
+func (receive *Receive) PrintfMessage(db *db.DB) {
 	receiveMsg := (*receive).RawMessage
 	if (*receive).MessageType == variable.GROUPMESSGAE {
 		groupId := (*receive).GroupId
