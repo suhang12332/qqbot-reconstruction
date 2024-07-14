@@ -5,6 +5,7 @@ import (
     "github.com/PuerkitoBio/goquery"
     "io"
     "qqbot-reconstruction/internal/pkg/log"
+    "qqbot-reconstruction/internal/pkg/variable"
     "strings"
 )
 
@@ -50,3 +51,13 @@ func ParseHelpTips(fun string, desc string, example string, scope string) string
     return "🙏说明一下用法🤭\n" + fmt.Sprintf("功能: %s\n描述: %s\n例如: %s\n范围: %s\n", fun, desc, example, scope) + "byd 你个老登儿,给我好好看🫵 "
 }
 
+func ParseMessageType(info string) string {
+    switch info {
+    case variable.PRIVATEMESSAGE:
+        return variable.PRIVATEMESSAGEZH
+    case variable.GROUPMESSGAE:
+        return variable.GROUPMESSGAEZH
+    default:
+        return variable.UNKNOWNMESSAGEZH
+    }
+}

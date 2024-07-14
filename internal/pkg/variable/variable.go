@@ -5,7 +5,6 @@ import (
     "gopkg.in/yaml.v3"
     "os"
     "qqbot-reconstruction/internal/pkg/log"
-    "qqbot-reconstruction/internal/pkg/util"
     "reflect"
     "sync"
 )
@@ -39,10 +38,6 @@ func init() {
         Actions = ReadConfigs(GetConfigWd()+"api.yml", &Action{})
         Urls = ReadConfigs(GetConfigWd()+"url.yml", &ApiUrl{})
         Tips = ReadConfigs(GetConfigWd()+"tips.yml", &Tip{})
-        if Tips.MessageType == "img" {
-			Tips.Info.NoArgs = util.TextParseImg(Tips.Info.NoArgs)
-			Tips.Info.NoPermissions = util.TextParseImg(Tips.Info.NoPermissions)
-        }
         Help = []string{"help", "帮助", "例子", "事例", "用法", "说明", "手册"}
     })
 }

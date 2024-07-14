@@ -434,7 +434,6 @@ type UserCountResult struct {
 }
 
 type Tip struct {
-    MessageType string
     Info struct{
         NoArgs string
         NoPermissions string

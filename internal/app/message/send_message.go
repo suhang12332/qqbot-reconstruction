@@ -65,7 +65,7 @@ func (receive *Receive) Tips(info string) *Send {
 
 func (receive *Receive) ScopeTips(name string,scope string) *Send {
 
-    return receive.Tips(fmt.Sprintf(`"%s"功能仅在中使用%s中使用`, name, ParseMessageType(scope)))
+    return receive.Tips(fmt.Sprintf(`"%s"功能仅在中使用%s中使用`, name, util.ParseMessageType(scope)))
 }
 func (receive *Receive) NoPermissionsTips() *Send {
     return receive.Tips(variable.Tips.Info.NoPermissions)
@@ -108,13 +108,3 @@ func (send *Send) ForwardMsg(data []variable.Messages) {
     }
 }
 
-func ParseMessageType(info string) string {
-    switch info {
-    case variable.PRIVATEMESSAGE:
-        return variable.PRIVATEMESSAGEZH
-    case variable.GROUPMESSGAE:
-        return variable.GROUPMESSGAEZH
-    default:
-        return variable.UNKNOWNMESSAGEZH
-    }
-}
