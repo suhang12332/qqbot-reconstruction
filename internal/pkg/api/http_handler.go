@@ -71,5 +71,5 @@ func Fetch[T any](method string, url string, params interface{}, t *T, header ma
         // If the returnType is not recognized, return the raw response bytes
     }
 
-    return respByte,t, false
+    return respByte,t, true
 }
