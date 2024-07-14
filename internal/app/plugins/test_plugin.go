@@ -12,6 +12,7 @@ type TestPlugin struct {
 	status    bool
 	whitelist []string
 	args  []string
+	scope []string
 }
 
 func (t *TestPlugin) SetName(name string) {
@@ -62,7 +63,13 @@ func (t *TestPlugin) GetWhiteList() []string {
 func (t *TestPlugin) SetWhiteList(whiteList []string) {
 	t.whitelist = whiteList
 }
+func (t *TestPlugin) SetScope(scope []string) {
+    t.scope = scope
+}
 
+func (t *TestPlugin) GetScope() []string {
+    return t.scope
+}
 func (t *TestPlugin) Help(receive *message.Receive) *message.Send {
 	return receive.Tips("给傻逼说明一下用法🤭")
 }

@@ -93,7 +93,7 @@ func (e *PluginEngine) loadPlugin(info *variable.PluginInfo) error {
     if err != nil {
         return err
     }
-    log.Infof(info.Name + "," + info.Keyword)
+    log.Infof("插件:" +info.Name + "  指令:" + info.Keyword)
     e.pluginRepository[info.Keyword] = plugin
     e.count++
     return nil
@@ -114,6 +114,12 @@ func (e *PluginEngine) HandleMessage(msg string) *string {
             if len(wl) != 0 && !util.In(strconv.Itoa(rcv.UserID), wl) {
                 return message.Send2res(rcv.NoPermissionsTips())
             }
+            sc := plugin.GetScope()
+            // 校验指令范围
+            if len(sc) != 0 && !util.In(rcv.MessageType, sc) {
+                return message.Send2res(rcv.ScopeTips(plugin.GetKeyword(),sc[0]))
+            }
+
             if len(split) > 1 {
 				// 校验帮助
                 if util.In(split[1], variable.Help) {
@@ -188,6 +194,27 @@ func (e *PluginEngine) SetWhiteList(name string, whiteList []string, mode string
     }
 }
 
+func (e *PluginEngine) SetScope(name string, scope []string, mode string) {
+    plugin, loaded := e.pluginRepository[name]
+    if !loaded {
+        log.Error("插件%s不存在", name)
+    }
+
+    wl := plugin.GetScope()
+
+    switch mode {
+    case variable.ADD:
+        plugin.SetScope(util.RemoveRepeatedElement(append(wl, scope...)))
+    case variable.REMOVE:
+        if len(wl) != 0 {
+            newWl := util.RemoveElement(scope, wl)
+            if len(newWl) != len(wl) {
+                plugin.SetScope(newWl)
+            }
+        }
+    }
+}
+
 func updatePlugin(plugin *Plugin, info *variable.PluginInfo) bool {
     // 更新插件信息
     updated := false
@@ -205,6 +232,10 @@ func updatePlugin(plugin *Plugin, info *variable.PluginInfo) bool {
     }
     if !util.IsStringArraysEqual((*plugin).GetArgs(), info.Args) {
         (*plugin).SetArgs(info.Args)
+        updated = true
+    }
+    if !util.IsStringArraysEqual((*plugin).GetScope(), info.Scope) {
+        (*plugin).SetScope(info.Scope)
         updated = true
     }
     return updated

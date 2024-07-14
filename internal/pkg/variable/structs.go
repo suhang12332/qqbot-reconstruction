@@ -377,6 +377,7 @@ type PluginInfo struct {
     Status    bool
     Args      []string
     Whitelist []string
+    Scope []string
 }
 
 type PluginsConfig struct {

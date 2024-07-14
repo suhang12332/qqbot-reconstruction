@@ -17,6 +17,7 @@ type AliSearchPlugin struct {
     status    bool
     whitelist []string
     args      []string
+    scope []string
 }
 
 const aliDriver = "阿里云盘搜索结果"
@@ -92,6 +93,14 @@ func (a *AliSearchPlugin) SetArgs(args []string) {
 
 func (a *AliSearchPlugin) GetArgs() []string {
     return a.args
+}
+
+func (a *AliSearchPlugin) SetScope(scope []string) {
+    a.scope = scope
+}
+
+func (a *AliSearchPlugin) GetScope() []string {
+    return a.scope
 }
 func (a *AliSearchPlugin) query(info string) (variable.AliResponse,bool) {
     urls := fmt.Sprintf(variable.Urls.Ali, url.QueryEscape(info))

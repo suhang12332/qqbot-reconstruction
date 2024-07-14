@@ -15,6 +15,7 @@ type HappyPlugin struct {
     status    bool
     whitelist []string
     args      []string
+    scope []string
 }
 
 const happyResult = "写真搜索结果"
@@ -83,6 +84,13 @@ func (h *HappyPlugin) GetWhiteList() []string {
 }
 func (h *HappyPlugin) Help(receive *message.Receive) *message.Send {
     return receive.Tips("给傻逼说明一下用法🤭")
+}
+func (h *HappyPlugin) SetScope(scope []string) {
+    h.scope = scope
+}
+
+func (h *HappyPlugin) GetScope() []string {
+    return h.scope
 }
 
 func (h *HappyPlugin) SetWhiteList(whiteList []string) {
