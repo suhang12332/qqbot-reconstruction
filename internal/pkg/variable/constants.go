@@ -4,8 +4,6 @@ const (
 	HTML = "html"
 	JSON = "json"
 
-	BYTE = "byte"
-
 	QQ = 635129639
 
 	NORMALESSAGE   = "normal"
@@ -14,4 +12,5 @@ const (
 
 	ADD    = "add"
 	REMOVE = "remove"
+	NODE = "node"
 )

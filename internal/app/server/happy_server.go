@@ -219,7 +219,7 @@ type BootStrap struct {
     } `json:"data"`
 }
 
-func init() {
+func initb() {
     s := "kXnzSuPkvkVcX7LZyEYw7CGTnQfpmyci2tbSVkRMH//SRVnwLed6Q+fS61RJ9pUy/pTF79087CJMgBpzUdw5hSRDKvebhp1XzoLqx9FNuTnj4umklvp9uob8HlFm/6/TPYo4Xa9ssJFRIEsp+UwqjrhXkMvUUv8YzzOI8Iul+Nn/JU4/4Wc6VgrvhgdfnzhOE0/Di0wimDXJfwnDwl2qNry4JN0XPjy2qrDgdraWWUyZWxKeLv6IOFiqHGFy1RVnK5gDM7W4rLdPmx91XTy57XNsdTpg6RseySoLri69sTGSzXsDB5qVQnQvAiDOBeKnSlvLs4kQ9UIa7fhk7AcXB76uodOJDI/nnG1knu7Fpqs="
     bytes := post(s, "https://api.10cb1c.com/v2.5/bootstrap")
     strap := BootStrap{}
@@ -313,6 +313,7 @@ func getSign(timex string) string {
     return sign
 }
 func Infos() []string {
+    initb()
     results := make([]string, 0)
     list := getList(1)
     data := list.Data[rand.Intn(len(list.Data))]

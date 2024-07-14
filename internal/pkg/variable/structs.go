@@ -437,5 +437,7 @@ type Tip struct {
     Info struct{
         NoArgs string
         NoPermissions string
+        NoResults string
+        RequestFail string
     }
 }

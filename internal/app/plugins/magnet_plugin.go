@@ -18,7 +18,7 @@ type MagnetPlugin struct {
 	whitelist []string
 	args  []string
 }
-
+const magnetResult = "磁力搜索结果"
 func (m *MagnetPlugin) SetName(name string) {
 	m.name = name
 }
@@ -55,24 +55,27 @@ func (m *MagnetPlugin) Execute(receive *message.Receive) *message.Send {
         return receive.NoArgsTips()
     }
 	send := receive.InitSend(true)
-	data := m.query(args[1]).Data
-	messages := make([]variable.Messages, len(data))
-	for key, value := range data {
-		m := value.Magnet
-		replace := strings.Replace(m, `//btsow.click/magnet/detail/hash/`, "", len(m))
-		value := fmt.Sprintf("%s %s", fmt.Sprintf("%s %s", value.Title, value.Size), replace)
-		util.ParseMessage(&value)
-		messages[key] = variable.Messages{
-			Type: "node",
-			Data: variable.GroupFowardData{
-				Name:    "磁力搜索结果",
-				Uin:     variable.QQ,
-				Content: value,
-			},
+	if result ,b := m.query(args[1]); b {
+		data := result.Data
+		messages := make([]variable.Messages, len(data))
+		for key, value := range data {
+			m := value.Magnet
+			replace := strings.Replace(m, `//btsow.click/magnet/detail/hash/`, "", len(m))
+			value := fmt.Sprintf("%s %s", fmt.Sprintf("%s %s", value.Title, value.Size), replace)
+			util.ParseMessage(&value)
+			messages[key] = variable.Messages{
+				Type: variable.NODE,
+				Data: variable.GroupFowardData{
+					Name: magnetResult   ,
+					Uin:     variable.QQ,
+					Content: value,
+				},
+			}
 		}
-	}
-	((*send).Params.(*variable.SendPrivateForwardMsg)).Messages = messages
-	return send
+		((*send).Params.(*variable.SendPrivateForwardMsg)).Messages = messages
+		return send
+    }
+	return receive.RequestFail()
 }
 
 func (m *MagnetPlugin) GetWhiteList() []string {
@@ -86,9 +89,8 @@ func (m *MagnetPlugin) SetWhiteList(whiteList []string) {
 	m.whitelist = whiteList
 }
 
-func (m *MagnetPlugin) query(info string) variable.MagnetResult {
+func (m *MagnetPlugin) query(info string) (variable.MagnetResult,bool) {
 	urls := fmt.Sprintf(variable.Urls.Magnet, url.QueryEscape(info))
-	result := &variable.MagnetResult{}
-	api.Fetch(http.MethodGet, urls, nil, result, nil, variable.HTML, false, api.Magnet, false, nil)
-	return *result
+    _, v, b := api.Fetch(http.MethodGet, urls, nil, &variable.MagnetResult{}, nil, variable.HTML, false, api.Magnet, false, nil)
+    return *v,b
 }
