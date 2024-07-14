@@ -70,6 +70,6 @@ func (t *TestPlugin) SetScope(scope []string) {
 func (t *TestPlugin) GetScope() []string {
     return t.scope
 }
-func (t *TestPlugin) Help(receive *message.Receive, scope []string) *message.Send {
+func (t *TestPlugin) Help(receive *message.Receive) *message.Send {
     return receive.Tips("给傻逼说明一下用法🤭")
 }

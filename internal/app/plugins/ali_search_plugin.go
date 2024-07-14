@@ -113,7 +113,7 @@ func (a *AliSearchPlugin) query(info string) (variable.AliResponse, bool) {
     return *v, b
 }
 
-func (a *AliSearchPlugin) Help(receive *message.Receive, scope []string) *message.Send {
+func (a *AliSearchPlugin) Help(receive *message.Receive) *message.Send {
 
-    return receive.Tips(util.ParseHelpTips("查询阿里云盘链接", `查询阿里云盘链接,使用 "/云盘 查询的名称"`, `/云盘 蜘蛛侠`, util.ParseHelp(scope)))
+    return receive.Tips(util.ParseHelpTips("查询阿里云盘链接", `查询阿里云盘链接,使用 "/云盘 查询的名称"`, `/云盘 蜘蛛侠`, util.ParseHelp(a.scope)))
 }

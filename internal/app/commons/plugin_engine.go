@@ -107,22 +107,10 @@ func (e *PluginEngine) HandleMessage(msg string) *string {
     rcv.PrintfMessage()
     split := strings.Split(rcv.RawMessage, " ")
     if plugin, loaded := e.pluginRepository[split[0]]; loaded {
-        wl := plugin.GetWhiteList()
-
-        // 校验白名单
-        if len(wl) != 0 && !util.In(strconv.Itoa(rcv.UserID), wl) {
-            return message.Send2res(rcv.NoPermissionsTips())
-        }
-        sc := plugin.GetScope()
-        // 校验指令范围
-        if len(sc) != 0 && !util.In(rcv.MessageType, sc) {
-            return message.Send2res(rcv.ScopeTips(plugin.GetKeyword(), sc[0]))
-        }
-
         if len(split) > 1 {
             // 校验帮助
             if util.In(split[1], variable.Help) {
-                if rv := plugin.Help(rcv, plugin.GetScope()); rv != nil {
+                if rv := plugin.Help(rcv); rv != nil {
                     return message.Send2res(rv)
                 }
             }
@@ -131,6 +119,18 @@ func (e *PluginEngine) HandleMessage(msg string) *string {
                 return message.Send2res(rcv.NoArgsTips())
             }
         }
+        sc := plugin.GetScope()
+        // 校验指令范围
+        if len(sc) != 0 && !util.In(rcv.MessageType, sc) {
+            return message.Send2res(rcv.ScopeTips(plugin.GetKeyword(), sc[0]))
+        }
+        
+        wl := plugin.GetWhiteList()
+        // 校验白名单
+        if len(wl) != 0 && !util.In(strconv.Itoa(rcv.UserID), wl) {
+            return message.Send2res(rcv.NoPermissionsTips())
+        }
+
         if rv := plugin.Execute(rcv); rv != nil {
             return message.Send2res(rv)
         }

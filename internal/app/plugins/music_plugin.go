@@ -93,6 +93,6 @@ func (m *MusicPlugin) query(info string) (variable.CloudSong, bool) {
     _, v, b := api.Fetch(http.MethodGet, urls, nil, &variable.CloudSong{}, header, variable.JSON, false, nil, false, nil)
     return *v, b
 }
-func (m *MusicPlugin) Help(receive *message.Receive, scope []string) *message.Send {
+func (m *MusicPlugin) Help(receive *message.Receive) *message.Send {
     return receive.Tips("给傻逼说明一下用法🤭")
 }

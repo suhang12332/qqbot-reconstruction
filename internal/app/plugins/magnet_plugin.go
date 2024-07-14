@@ -84,7 +84,7 @@ func (m *MagnetPlugin) Execute(receive *message.Receive) *message.Send {
 func (m *MagnetPlugin) GetWhiteList() []string {
     return m.whitelist
 }
-func (m *MagnetPlugin) Help(receive *message.Receive, scope []string) *message.Send {
+func (m *MagnetPlugin) Help(receive *message.Receive) *message.Send {
     return receive.Tips("给傻逼说明一下用法🤭")
 }
 
