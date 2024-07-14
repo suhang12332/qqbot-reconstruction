@@ -51,19 +51,19 @@ func (send *Send) assembleMessage(isForward bool, receive *Receive) *Send {
         }
         send.Action = variable.Actions.SendMsg
     }
-    
+
     return send
 }
 func (receive *Receive) Tips(info string) *Send {
     send := receive.InitSend(false)
     if receive.MessageType == variable.GROUPMESSGAE {
-        info = util.ALtCQ(receive.UserID,info)
+        info = util.ALtCQ(receive.UserID, info)
     }
     ((*send).Params.(*variable.SendMsg)).Message = info
     return send
 }
 
-func (receive *Receive) ScopeTips(name string,scope string) *Send {
+func (receive *Receive) ScopeTips(name string, scope string) *Send {
 
     return receive.Tips(fmt.Sprintf(`"%s"功能仅在中使用%s中使用`, name, util.ParseMessageType(scope)))
 }
@@ -107,4 +107,3 @@ func (send *Send) ForwardMsg(data []variable.Messages) {
         break
     }
 }
-

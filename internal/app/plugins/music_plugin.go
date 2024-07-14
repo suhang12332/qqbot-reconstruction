@@ -17,7 +17,7 @@ type MusicPlugin struct {
     status    bool
     whitelist []string
     args      []string
-    scope []string
+    scope     []string
 }
 
 func (m *MusicPlugin) SetName(name string) {
@@ -66,7 +66,7 @@ func (m *MusicPlugin) Execute(receive *message.Receive) *message.Send {
             ((*send).Params.(*variable.SendMsg)).Message = res
             return send
         }
-		return receive.NoResults()
+        return receive.NoResults()
     }
     return receive.RequestFail()
 }
@@ -93,6 +93,6 @@ func (m *MusicPlugin) query(info string) (variable.CloudSong, bool) {
     _, v, b := api.Fetch(http.MethodGet, urls, nil, &variable.CloudSong{}, header, variable.JSON, false, nil, false, nil)
     return *v, b
 }
-func (m *MusicPlugin) Help(receive *message.Receive) *message.Send {
+func (m *MusicPlugin) Help(receive *message.Receive, scope []string) *message.Send {
     return receive.Tips("给傻逼说明一下用法🤭")
 }

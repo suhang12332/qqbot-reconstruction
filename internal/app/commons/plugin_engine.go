@@ -122,7 +122,7 @@ func (e *PluginEngine) HandleMessage(msg string) *string {
         if len(split) > 1 {
             // 校验帮助
             if util.In(split[1], variable.Help) {
-                if rv := plugin.Help(rcv); rv != nil {
+                if rv := plugin.Help(rcv, plugin.GetScope()); rv != nil {
                     return message.Send2res(rv)
                 }
             }

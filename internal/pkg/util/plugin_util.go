@@ -1,5 +1,11 @@
 package util
 
+import (
+    "fmt"
+    "qqbot-reconstruction/internal/pkg/variable"
+    "strings"
+)
+
 func In(target string, arr []string) bool {
     for _, element := range arr {
         if target == element {
@@ -42,4 +48,14 @@ func RemoveElement(targets []string, arr []string) []string {
         }
     }
     return arr
+}
+
+func ParseHelp(scope []string) string {
+    if len(scope) == 0 {
+        return fmt.Sprintf("[%s,%s]", variable.GROUPMESSGAEZH, variable.PRIVATEMESSAGEZH)
+    }
+    for key, value := range scope {
+        scope[key] = ParseMessageType(value)
+    }
+    return fmt.Sprintf("[%s]", strings.Join(scope, ","))
 }

@@ -18,5 +18,5 @@ type Plugin interface {
     GetArgs() []string
     SetScope(args []string)
     GetScope() []string
-    Help(receive *message.Receive) *message.Send
+    Help(receive *message.Receive, scope []string) *message.Send
 }
