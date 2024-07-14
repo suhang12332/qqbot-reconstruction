@@ -38,7 +38,7 @@ type ColorLogger struct {
 // NewColorLogger 创建一个新的 ColorLogger
 func NewColorLogger(level int) *ColorLogger {
     return &ColorLogger{
-        logger:  log.New(os.Stdout,"", log.Llongfile),
+        logger:  log.New(os.Stdout,"",0),
         level:   level,
     }
 }

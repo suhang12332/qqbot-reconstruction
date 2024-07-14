@@ -77,13 +77,12 @@ func Send2res(send *Send) *string {
     marshal, err := json.Marshal(send)
     switch send.Action {
     case variable.Actions.SendMsg:
-        log.Info("回复消息: ", strings.ReplaceAll((*send).Params.(*variable.SendMsg).Message, "\n", "\t"))
+        log.Info("回复消息: %s", strings.ReplaceAll((*send).Params.(*variable.SendMsg).Message, "\n", "\t"))
     }
     if err != nil {
         log.Error("消息回复失败: ", err)
     }
     result := string(marshal)
-    log.Infof(result)
 
     return &result
 }
