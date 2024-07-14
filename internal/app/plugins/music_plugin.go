@@ -17,7 +17,7 @@ type MusicPlugin struct {
     status    bool
     whitelist []string
     args      []string
-    scope []string
+    scope     []string
 }
 
 func (m *MusicPlugin) SetName(name string) {
@@ -66,7 +66,7 @@ func (m *MusicPlugin) Execute(receive *message.Receive) *message.Send {
             ((*send).Params.(*variable.SendMsg)).Message = res
             return send
         }
-		return receive.NoResults()
+        return receive.NoResults()
     }
     return receive.RequestFail()
 }

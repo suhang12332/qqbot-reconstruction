@@ -17,7 +17,7 @@ type AliSearchPlugin struct {
     status    bool
     whitelist []string
     args      []string
-    scope []string
+    scope     []string
 }
 
 const aliDriver = "阿里云盘搜索结果"
@@ -102,7 +102,7 @@ func (a *AliSearchPlugin) SetScope(scope []string) {
 func (a *AliSearchPlugin) GetScope() []string {
     return a.scope
 }
-func (a *AliSearchPlugin) query(info string) (variable.AliResponse,bool) {
+func (a *AliSearchPlugin) query(info string) (variable.AliResponse, bool) {
     urls := fmt.Sprintf(variable.Urls.Ali, url.QueryEscape(info))
     header := make(map[string]string)
     header["Origin"] = "https://www.upyunso.com"
@@ -114,5 +114,6 @@ func (a *AliSearchPlugin) query(info string) (variable.AliResponse,bool) {
 }
 
 func (a *AliSearchPlugin) Help(receive *message.Receive) *message.Send {
-    return receive.Tips(util.ParseHelpTips("查询阿里云盘链接", `查询阿里云盘链接,使用 "/云盘 查询的名称"`, `/云盘 蜘蛛侠`, `[群聊,私聊]`))
+
+    return receive.Tips(util.ParseHelpTips("查询阿里云盘链接", `查询阿里云盘链接,使用 "/云盘 查询的名称"`, `/云盘 蜘蛛侠`, util.ParseHelp(a.scope)))
 }
