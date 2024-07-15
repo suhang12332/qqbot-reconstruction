@@ -115,7 +115,7 @@ func (e *PluginEngine) HandleMessage(msg string, emitFn func(*string)) {
 	if '/' != rcv.RawMessage[0] {
 		return
 	}
-	split := strings.Split(rcv.RawMessage, " ")
+	split := strings.Split(rcv.RawMessage[1:], " ")
 	// 校验订阅消息
 	isSubscribe := false
 	if len(split) >= 2 && split[0] == variable.SUBSCRIBE {
@@ -123,9 +123,14 @@ func (e *PluginEngine) HandleMessage(msg string, emitFn func(*string)) {
 		split = split[1:] // 获取订阅插件的参数
 	}
 
+	if isSubscribe && util.In(split[0], variable.Help) {
+		emitFn(message.Send2res(rcv.Tips(util.ParseHelpTips("订阅功能", `定时执行功能，当指定开始时间时，订阅周期至少为24小时;使用 "/订阅 功能 周期(小时) (开始时间)"`, `/订阅 测试 24 23:00`, util.ParseHelp([]string{})))))
+		return
+	}
+
 	if plugin, loaded := e.pluginRepository[split[0]]; loaded {
 		// 校验插件可否订阅
-		if !(isSubscribe && plugin.Subscribable()) {
+		if isSubscribe && !plugin.Subscribable() {
 			return
 		}
 		if len(split) > 1 {

@@ -19,5 +19,5 @@ const (
 	REMOVE = "remove"
 	NODE   = "node"
 
-	SUBSCRIBE = "/订阅"
+	SUBSCRIBE = "订阅"
 )

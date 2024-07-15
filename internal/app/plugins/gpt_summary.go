@@ -51,8 +51,7 @@ func (g *GptSummaryPlugin) GetArgs() []string {
 }
 
 func (g *GptSummaryPlugin) Help(receive *message.Receive) *message.Send {
-	//TODO implement me
-	panic("implement me")
+	return receive.Tips(util.ParseHelpTips("总结群聊的内容", `使用AI对过去24小时内的聊天内容进行总结;使用 "/总结"`, `/色图`, util.ParseHelp(g.scope)))
 }
 
 func (g *GptSummaryPlugin) Execute(receive *message.Receive) *message.Send {
