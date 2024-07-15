@@ -75,19 +75,17 @@ func (g *GptSummaryPlugin) GetMessageSummary(groupId string) string {
 func (g *GptSummaryPlugin) Query(dialog string) (string, bool) {
 	header := make(map[string]string)
 	header["Authorization"] = variable.Urls.GptKey
-	header["Content-Type"] = "application/json"
 	body := map[string]interface{}{
-		"model": "gpt-3.5-turbo",
+		"model":           "kimi",
+		"conversation_id": "cqa9u5g967u4ac8lmbn0",
 		"messages": []map[string]string{
 			{
-				"role":    "system",
-				"content": "你是一个用于总结群聊聊天记录的助手",
-			},
-			{
 				"role":    "user",
-				"content": "使用中文总结以下聊天记录，200字左右，给出当天的日期，按时间脉络对当日发生的事件进行总结，但是不可以在总结中写出具体的时间：" + dialog,
+				"content": dialog,
 			},
 		},
+		"use_search": false,
+		"stream":     false,
 	}
 	jsonData, _ := json.Marshal(body)
 	_, v, ok := api.Fetch(http.MethodPost, variable.Urls.Gpt, string(jsonData), &variable.GPTResponse{}, header, variable.JSON, false, nil, false, nil)
