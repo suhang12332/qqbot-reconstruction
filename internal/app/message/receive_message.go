@@ -1,7 +1,7 @@
 package message
 
 import (
-    "fmt"
+	"fmt"
 	"qqbot-reconstruction/internal/app/db"
 	"qqbot-reconstruction/internal/pkg/log"
 	"qqbot-reconstruction/internal/pkg/variable"
@@ -93,5 +93,5 @@ func (receive *Receive) PrintfMessage() {
 	}
 	//插入消息数据
 	tReceive, tSender := receive.ParseTReceive()
-	db.InsertMessage(tReceive, tSender)
+	db.Database.InsertMessage(tReceive, tSender)
 }

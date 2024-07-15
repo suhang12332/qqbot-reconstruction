@@ -4,6 +4,7 @@ import (
     "fmt"
     "qqbot-reconstruction/internal/pkg/variable"
     "strings"
+	"time"
 )
 
 func In(target string, arr []string) bool {
@@ -58,4 +59,9 @@ func ParseHelp(scope []string) string {
         scope[key] = ParseMessageType(value)
     }
     return fmt.Sprintf("[%s]", strings.Join(scope, ","))
+}
+
+func Timestamp2String(ts int64) string {
+	t := time.Unix(ts, 0)
+	return t.Format("2006-01-02 15:04:05")
 }

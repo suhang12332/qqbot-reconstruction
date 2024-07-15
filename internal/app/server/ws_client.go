@@ -1,8 +1,8 @@
 package client
 
 import (
-    "errors"
-    "fmt"
+	"errors"
+	"fmt"
 	"github.com/fsnotify/fsnotify"
 	"github.com/togettoyou/wsc"
 	"qqbot-reconstruction/internal/app/commons"
