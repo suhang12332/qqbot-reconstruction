@@ -1,8 +1,7 @@
 package plugins
 
 import (
-	"encoding/json"
-	"fmt"
+    "fmt"
 	"net/http"
 	"qqbot-reconstruction/internal/app/db"
 	"qqbot-reconstruction/internal/app/message"
@@ -87,8 +86,8 @@ func (g *GptSummaryPlugin) Query(dialog string) (string, bool) {
 		"use_search": false,
 		"stream":     false,
 	}
-	jsonData, _ := json.Marshal(body)
-	_, v, ok := api.Fetch(http.MethodPost, variable.Urls.Gpt, string(jsonData), &variable.GPTResponse{}, header, variable.JSON, false, nil, false, nil)
+//	jsonData, _ := json.Marshal(body)
+	_, v, ok := api.Fetch(http.MethodPost, variable.Urls.Gpt, body, &variable.GPTResponse{}, header, variable.JSON, false, nil, false, nil)
 
 	return v.Choices[0].Message.Content, ok
 }

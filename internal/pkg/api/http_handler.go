@@ -37,7 +37,7 @@ func Fetch[T any](method string, url string, params interface{}, t *T, header ma
         case map[string]string:
             r.SetFormData(v)
         default:
-            r.SetBody(params.(string))
+            r.SetBody(params)
         }
     }
 
