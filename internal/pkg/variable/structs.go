@@ -374,12 +374,13 @@ type Common struct {
 }
 
 type PluginInfo struct {
-	Name      string
-	Keyword   string
-	Status    bool
-	Args      []string
-	Whitelist []string
-	Scope     []string
+	Name         string
+	Keyword      string
+	Status       bool
+	Subscribable bool
+	Args         []string
+	Whitelist    []string
+	Scope        []string
 }
 
 type PluginsConfig struct {

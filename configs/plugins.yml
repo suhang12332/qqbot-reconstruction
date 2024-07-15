@@ -1,37 +1,50 @@
 plugins:
   - name: test
-    keyword: /早报
+    keyword: 早报
     args: ["订阅","退订"]
     scope: []
     whitelist: ["2292348488"]
     status: true
+    subscribable: false
   - name: music
-    keyword: /点歌
+    keyword: 点歌
     args: []
     scope: []
     whitelist: ["1552899301"]
     status: true
+    subscribable: false
   - name: magnet
-    keyword: /资源
+    keyword: 资源
     args: []
     whitelist: []
     scope: []
     status: true
+    subscribable: false
   - name: ali_search
-    keyword: /云盘
+    keyword: 云盘
     whitelist: []
     args: []
     scope: []
     status: true
+    subscribable: false
   - name: happy
-    keyword: /色图
+    keyword: 色图
     whitelist: ["1552899301"]
     args: []
     scope: ["private"]
     status: true
+    subscribable: false
   - name: gpt_summary
-    keyword: /总结
+    keyword: 总结
     args: [ ]
     whitelist: [ ]
     scope: []
     status: true
+    subscribable: false
+  - name: test_subscribe
+    keyword: 测试
+    args: [ ]
+    whitelist: [ ]
+    scope: []
+    status: true
+    subscribable: true

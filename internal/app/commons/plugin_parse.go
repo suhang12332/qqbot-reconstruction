@@ -13,4 +13,5 @@ func (r *PluginRegistry) PluginScanner(plugin []variable.PluginInfo) {
 	r.Register(plugin[3].Name, reflect.TypeOf(plugins.AliSearchPlugin{}))
 	r.Register(plugin[4].Name, reflect.TypeOf(plugins.HappyPlugin{}))
 	r.Register(plugin[5].Name, reflect.TypeOf(plugins.GptSummaryPlugin{}))
+	r.Register(plugin[6].Name, reflect.TypeOf(plugins.TestSubscribePlugin{}))
 }

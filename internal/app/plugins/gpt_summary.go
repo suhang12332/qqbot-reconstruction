@@ -1,7 +1,7 @@
 package plugins
 
 import (
-    "fmt"
+	"fmt"
 	"net/http"
 	"qqbot-reconstruction/internal/app/db"
 	"qqbot-reconstruction/internal/app/message"
@@ -16,12 +16,21 @@ import (
 
 // GptSummaryPlugin 使用GPT总结每日群聊的内容
 type GptSummaryPlugin struct {
-	name      string
-	keyword   string
-	status    bool
-	whitelist []string
-	args      []string
-	scope     []string
+	name         string
+	keyword      string
+	status       bool
+	subscribable bool
+	whitelist    []string
+	args         []string
+	scope        []string
+}
+
+func (g *GptSummaryPlugin) SetSubscribable(b bool) {
+	g.subscribable = b
+}
+
+func (g *GptSummaryPlugin) Subscribable() bool {
+	return g.subscribable
 }
 
 func (g *GptSummaryPlugin) SetScope(args []string) {
@@ -86,7 +95,7 @@ func (g *GptSummaryPlugin) Query(dialog string) (string, bool) {
 		"use_search": false,
 		"stream":     false,
 	}
-//	jsonData, _ := json.Marshal(body)
+	//	jsonData, _ := json.Marshal(body)
 	_, v, ok := api.Fetch(http.MethodPost, variable.Urls.Gpt, body, &variable.GPTResponse{}, header, variable.JSON, false, nil, false, nil)
 
 	return v.Choices[0].Message.Content, ok

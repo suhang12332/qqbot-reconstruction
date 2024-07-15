@@ -9,8 +9,8 @@ import (
 	"qqbot-reconstruction/internal/pkg/log"
 	"qqbot-reconstruction/internal/pkg/util"
 	"qqbot-reconstruction/internal/pkg/variable"
-    "strings"
-    "time"
+	"strings"
+	"time"
 )
 
 var ws *wsc.Wsc
@@ -76,12 +76,10 @@ func Start() {
 	ws.OnSentError(func(err error) {
 		log.Error("回复失败: %s", err.Error())
 	})
-    ws.OnTextMessageReceived(func(message string) {
+	ws.OnTextMessageReceived(func(message string) {
 		go func() {
 			if strings.Contains(message, `post_type":"message"`) {
-				if rv := pluginEngine.HandleMessage(message); rv != nil {
-					SendQMessage(rv)
-				}
+				pluginEngine.HandleMessage(message, SendQMessage)
 			}
 
 			// 实现其他功能

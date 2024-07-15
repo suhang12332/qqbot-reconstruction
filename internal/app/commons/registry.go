@@ -2,7 +2,7 @@ package commons
 
 import (
 	"fmt"
-    "qqbot-reconstruction/internal/pkg/variable"
+	"qqbot-reconstruction/internal/pkg/variable"
 	"reflect"
 )
 
@@ -37,6 +37,7 @@ func (r *PluginRegistry) CreatePlugin(name string, info *variable.PluginInfo) (P
 			plg.SetWhiteList(info.Whitelist)
 			plg.SetArgs(info.Args)
 			plg.SetScope(info.Scope)
+			plg.SetSubscribable(info.Subscribable)
 			return plg, nil
 		} else {
 			return nil, fmt.Errorf("插件%s错误", name)
