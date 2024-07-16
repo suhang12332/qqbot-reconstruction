@@ -1,7 +1,6 @@
 package commons
 
 import (
-    "encoding/json"
     "fmt"
     "qqbot-reconstruction/internal/app/message"
     "qqbot-reconstruction/internal/pkg/log"
@@ -99,11 +98,7 @@ func (e *PluginEngine) loadPlugin(info *variable.PluginInfo) error {
     return nil
 }
 
-func (e *PluginEngine) HandleMessage(msg string) *string {
-    rcv := &message.Receive{}
-    if err := json.Unmarshal([]byte(msg), rcv); err != nil {
-        log.Errorf("接收消息转换失败!")
-    }
+func (e *PluginEngine) HandleMessage(rcv *message.Receive) *string {
     rcv.PrintfMessage()
     split := strings.Split(rcv.RawMessage, " ")
     if plugin, loaded := e.pluginRepository[split[0]]; loaded {

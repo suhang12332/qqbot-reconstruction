@@ -91,6 +91,7 @@ func (receive *Receive) PrintfMessage() {
 	} else {
 		log.Infof(fmt.Sprintf("收到消息: %s", fmt.Sprintf("'%s'': %s", (*receive).Sender.Nickname, receiveMsg)))
 	}
+	fmt.Println(receive)
 	//插入消息数据
 	tReceive, tSender := receive.ParseTReceive()
 	db.Database.InsertMessage(tReceive, tSender)

@@ -70,7 +70,7 @@ func (m *MagnetPlugin) Execute(receive *message.Receive) *message.Send {
                 Type: variable.NODE,
                 Data: variable.GroupFowardData{
                     Name:    magnetResult,
-                    Uin:     variable.QQ,
+                    Uin:     receive.UserID,
                     Content: value,
                 },
             }

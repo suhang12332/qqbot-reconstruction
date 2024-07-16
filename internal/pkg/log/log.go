@@ -2,94 +2,95 @@ package log
 
 import (
     "fmt"
-    "log"
-    "os"
+    "github.com/LagrangeDev/LagrangeGo/utils"
+    "github.com/mattn/go-colorable"
+    "github.com/sirupsen/logrus"
+    "strings"
     "time"
 )
 
-// 定义颜色常量
+
+
+
+func Info(format string, arg ...any) {
+    logger.Infof(format, arg...)
+}
+
+func Infof(format string) {
+    logger.Infof(format)
+}
+
+func Warning(format string, arg ...any) {
+    logger.Warnf(format, arg...)
+}
+
+func Warningf(format string) {
+    logger.Warnf(format)
+}
+
+func Debug(format string, arg ...any) {
+    logger.Debugf(format, arg...)
+}
+
+func Debugf(format string) {
+    logger.Debugf(format)
+}
+
+func Error(format string, arg ...any) {
+    logger.Errorf(format, arg...)
+}
+
+func Errorf(format string) {
+    logger.Errorf(format)
+}
+
+func Fatal(format string, arg ...any) {
+    logger.Fatalf(format, arg...)
+}
+
+func Fatalf(format string) {
+    logger.Fatalf(format)
+}
+
 const (
-    Reset  = "\033[0m"
-    Red    = "\033[31m"
-    Green  = "\033[32m"
-    Yellow = "\033[33m"
-    Blue   = "\033[34m"
-    Purple = "\033[35m"
-    Cyan   = "\033[36m"
-    White  = "\033[37m"
+    // 定义颜色代码
+    colorReset  = "\x1b[0m"
+    colorRed    = "\x1b[31m"
+    colorYellow = "\x1b[33m"
+    colorGreen  = "\x1b[32m"
+    colorBlue   = "\x1b[34m"
+    colorWhite  = "\x1b[37m"
 )
 
-// 定义日志级别常量
-const (
-    INFO = iota
-    WARN
-    ERROR
-    DEBUG
-)
-
-var base *ColorLogger
-
-// ColorLogger 包装器，用于为不同日志级别添加颜色和前缀
-type ColorLogger struct {
-    logger  *log.Logger
-    level   int
-}
-
-// NewColorLogger 创建一个新的 ColorLogger
-func NewColorLogger(level int) *ColorLogger {
-    return &ColorLogger{
-        logger:  log.New(os.Stdout,"",0),
-        level:   level,
-    }
-}
-
-// Log 方法根据级别和颜色打印日志
-func (cl *ColorLogger) Log(level int, color string, prefix string, v ...interface{}) {
-    if level >= cl.level {
-        now := time.Now().Format("2006年01月02日15时04分05秒")
-        coloredPrefix := fmt.Sprintf("%s[%s]%s%s", color, now, prefix, Reset)
-        cl.logger.SetPrefix(coloredPrefix)
-        cl.logger.Output(2, fmt.Sprintf("%s%s%s", color, fmt.Sprint(v...), Reset))
-    }
-}
-
-
-// Fatal 方法用于记录致命错误并终止程序执行
-func (cl *ColorLogger) Fatal(color string, format string, v ...interface{}) {
-	now := time.Now().Format("2006年01月02日15时04分05秒")
-	coloredPrefix := fmt.Sprintf("%s[%s][FATAL]: %s", color, now, Reset)
-	cl.logger.SetPrefix(coloredPrefix)
-	cl.logger.Fatalf(fmt.Sprintf("%s%s%s", color, format, Reset), v...)
-}
+var logger = logrus.New()
 
 func init() {
-
-    base = NewColorLogger(INFO)
+    logger.SetLevel(logrus.TraceLevel)
+    logger.SetFormatter(&ColoredFormatter{})
+    logger.SetOutput(colorable.NewColorableStdout())
 }
 
-func Error(s string, info interface{}) {
-    base.Log(ERROR, Red, "[ERROR]: ", fmt.Sprintf(s, info))
-}
-func Errorf(s string) {
-    base.Log(ERROR, Red, "[ERROR]: ", s)
-}
-func Info(s string, info interface{}) {
-    base.Log(INFO, Green, "[INFO]: ", fmt.Sprintf(s, info))
-}
-func Infof(s string) {
-    base.Log(INFO, Green, "[INFO]: ", s)
-}
-func Debug(s string, info interface{}) {
-    base.Log(DEBUG, Cyan, "[DEBUG]: ", fmt.Sprintf( s, info))
-}
-func Debugf(s string) {
-    base.Log(DEBUG, Cyan, "[DEBUG]: ", s)
-}
+type ColoredFormatter struct{}
 
-func Fatalf(s string) {
-    base.Fatal(Red, "%s", s)
-}
+func (f *ColoredFormatter) Format(entry *logrus.Entry) ([]byte, error) {
+    // 获取当前时间戳
+    timestamp := time.Now().Format("2006-01-02 15:04:05")
 
-func Fatal(s string, info interface{}) {
-    base.Fatal(Red, "%s", fmt.Sprintf(s, info))
+    // 根据日志级别设置相应的颜色
+    var levelColor string
+    switch entry.Level {
+    case logrus.DebugLevel:
+        levelColor = colorBlue
+    case logrus.InfoLevel:
+        levelColor = colorGreen
+    case logrus.WarnLevel:
+        levelColor = colorYellow
+    case logrus.ErrorLevel, logrus.FatalLevel, logrus.PanicLevel:
+        levelColor = colorRed
+    default:
+        levelColor = colorWhite
+    }
+
+    return utils.S2B(fmt.Sprintf("[%s] [%s%s%s]: %s\n",
+        timestamp, levelColor, strings.ToUpper(entry.Level.String()), colorReset, entry.Message)), nil
 }
