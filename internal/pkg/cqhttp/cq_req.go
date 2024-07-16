@@ -7,7 +7,6 @@ import (
     "github.com/LagrangeDev/LagrangeGo/message"
     "hash/crc32"
     message2 "qqbot-reconstruction/internal/app/message"
-    "qqbot-reconstruction/internal/pkg/log"
     "strconv"
 
     "strings"
