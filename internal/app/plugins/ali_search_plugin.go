@@ -52,7 +52,7 @@ func (a *AliSearchPlugin) Execute(receive *message.Receive) *message.Send {
         return receive.NoArgsTips()
     }
     send := receive.InitSend(true)
-    if result, b := a.query(args[1]); b {
+    if result, b := a.Query(args[1]); b {
         aliInfos := result.Result.Items
         if len(aliInfos) <= 4 {
             return receive.NoResults()
@@ -102,14 +102,14 @@ func (a *AliSearchPlugin) SetScope(scope []string) {
 func (a *AliSearchPlugin) GetScope() []string {
     return a.scope
 }
-func (a *AliSearchPlugin) query(info string) (variable.AliResponse, bool) {
+func (a *AliSearchPlugin) Query(info string) (variable.AliResponse, bool) {
     urls := fmt.Sprintf(variable.Urls.Ali, url.QueryEscape(info))
-    header := make(map[string]string)
-    header["Origin"] = "https://www.upyunso.com"
-    header["Referer"] = "https://www.upyunso.com/"
-    header["User-Agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2.1 Safari/605.1.15"
-    header["Host"] = "upapi.juapp9.com"
-    _, v, b := api.Fetch(http.MethodGet, urls, nil, &variable.AliResponse{}, header, variable.JSON, false, nil, true, api.DecodeBase64)
+    _, v, b := api.Fetch(http.MethodGet, urls, nil, &variable.AliResponse{}, map[string]string{
+        "Origin" : "https://www.upyunso.com",
+        "Referer" : "https://www.upyunso.com/",
+        "User-Agent" : "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2.1 Safari/605.1.15",
+        "Host" : "upapi.juapp9.com",
+    }, variable.JSON, false, nil, true, api.DecodeBase64)
     return *v, b
 }
 

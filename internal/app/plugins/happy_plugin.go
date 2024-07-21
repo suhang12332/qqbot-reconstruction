@@ -60,7 +60,7 @@ func (h *HappyPlugin) Execute(receive *message.Receive) *message.Send {
 		return receive.NoArgsTips()
 	}
 	send := receive.InitSend(true)
-	if result, b := server.Infos(length); b {
+	if result, b := h.Query(length); b {
 		messages := make([]variable.Messages, len(result))
 		for key, value := range result {
 
@@ -68,7 +68,7 @@ func (h *HappyPlugin) Execute(receive *message.Receive) *message.Send {
 				Type: variable.NODE,
 				Data: variable.GroupFowardData{
 					Name:    happyResult,
-					Uin:     variable.QQ,
+					Uin:     receive.UserID,
 					Content: util.PictureCQ(strings.Replace(value, `https://jmtp.mediavorous.com/storage/article`, `http://127.0.0.1:8081/happy`, 1)),
 				},
 			}
@@ -95,4 +95,8 @@ func (h *HappyPlugin) GetScope() []string {
 
 func (h *HappyPlugin) SetWhiteList(whiteList []string) {
 	h.whitelist = whiteList
+}
+
+func (h *HappyPlugin) Query(len int) ([]string,bool)  {
+	return server.Infos(len)
 }
