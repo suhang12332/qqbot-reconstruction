@@ -9,7 +9,7 @@ plugins:
     keyword: /点歌
     args: []
     scope: []
-    whitelist: ["1552899301"]
+    whitelist: []
     status: true
   - name: magnet
     keyword: /资源
@@ -25,7 +25,7 @@ plugins:
     status: true
   - name: happy
     keyword: /色图
-    whitelist: ["1552899301"]
+    whitelist: []
     args: []
     scope: ["private"]
     status: true
