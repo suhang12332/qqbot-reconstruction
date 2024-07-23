@@ -43,6 +43,5 @@ func (r *PluginRegistry) CreatePlugin(name string, info *variable.PluginInfo) (P
 			return nil, fmt.Errorf("插件%s错误", name)
 		}
 	}
-
 	return nil, fmt.Errorf("插件%s未注册", name)
 }
