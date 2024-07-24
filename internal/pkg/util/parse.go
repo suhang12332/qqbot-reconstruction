@@ -61,3 +61,15 @@ func ParseMessageType(info string) string {
 		return variable.UNKNOWNMESSAGEZH
 	}
 }
+
+
+
+func ParseCiliDanDan(mes *string) {
+	result := strings.ReplaceAll(*mes, `<strong class="highlight">`, "")
+    result = strings.ReplaceAll(result, `</strong>`, "")
+    result = strings.ReplaceAll(result, "-", "")
+    result = strings.ReplaceAll(result, "=", "")
+    result = strings.ReplaceAll(result, "[", "")
+    result = strings.ReplaceAll(result, "]", "")
+    *mes = result
+}

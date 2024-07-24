@@ -60,7 +60,7 @@ func (h *HappyPlugin) Execute(receive *message.Receive) *message.Send {
 		return receive.NoArgsTips()
 	}
 	send := receive.InitSend(true)
-	if result, b := server.Infos(length); b {
+	if result, b := h.Query(length); b {
 		messages := make([]variable.Messages, len(result))
 		for key, value := range result {
 
@@ -95,4 +95,8 @@ func (h *HappyPlugin) GetScope() []string {
 
 func (h *HappyPlugin) SetWhiteList(whiteList []string) {
 	h.whitelist = whiteList
+}
+
+func (h *HappyPlugin) Query(len int) ([]string, bool) {
+	return server.Infos(len)
 }

@@ -58,7 +58,7 @@ func (m *MusicPlugin) Execute(receive *message.Receive) *message.Send {
 		return receive.NoArgsTips()
 	}
 	send := receive.InitSend(false)
-	if result, b := m.query(args[1]); b {
+	if result, b := m.Query(args[1]); b {
 		song := result.Result
 		if song.SongCount != 0 {
 			// [CQ:music,type=custom,url=http://baidu.com,audio=http://baidu.com/1.mp3,title=音乐标题]
@@ -86,7 +86,7 @@ func (m *MusicPlugin) GetScope() []string {
 	return m.scope
 }
 
-func (m *MusicPlugin) query(info string) (variable.CloudSong, bool) {
+func (m *MusicPlugin) Query(info string) (variable.CloudSong, bool) {
 	urls := fmt.Sprintf(variable.Urls.CloudSong, url.QueryEscape(info))
 	header := make(map[string]string)
 	header["Cookie"] = "NMTID=00Oj2vUG0sL7HQJLEpZrByVHMaxRMUAAAGCytb4jw"

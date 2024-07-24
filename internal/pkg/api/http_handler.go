@@ -4,7 +4,8 @@ import (
     "bytes"
     "encoding/json"
     "errors"
-    "github.com/PuerkitoBio/goquery"
+	"fmt"
+	"github.com/PuerkitoBio/goquery"
     "github.com/imroc/req/v3"
     "io"
     "net/http"
@@ -59,6 +60,7 @@ func Fetch[T any](method string, url string, params interface{}, t *T, header ma
     }
     switch returnType {
     case variable.HTML:
+        fmt.Println(string(respByte))
         reader := io.NopCloser(bytes.NewReader(respByte))
         doc := util.ParseHtml(reader)
         respByte = fn(doc)

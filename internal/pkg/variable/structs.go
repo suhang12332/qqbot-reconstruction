@@ -474,3 +474,24 @@ type GPTResponse struct {
 	} `json:"usage"`
 	Created int `json:"created"`
 }
+
+
+type MagnetResponse struct {
+    Total int `json:"total"`
+    Rows  []struct {
+        Extension  string `json:"extension"`
+        FileNum    int    `json:"fileNum"`
+        LastSeen   string `json:"lastSeen"`
+        DataHash   string `json:"dataHash"`
+        CreateTime string `json:"createTime"`
+        Length     int64  `json:"length"`
+        Name       string `json:"name"`
+        InfoHash   string `json:"infoHash"`
+        Requests   int    `json:"requests"`
+        ID         int    `json:"id"`
+        Category   string `json:"category"`
+        Status     int    `json:"status"`
+    } `json:"rows"`
+    Code int    `json:"code"`
+    Msg  string `json:"msg"`
+}
