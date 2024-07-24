@@ -4,12 +4,12 @@ const (
 	HTML = "html"
 	JSON = "json"
 
-	QQ = 635129639
+	QQ = 3232853039
 
-	NORMALESSAGE   = "normal"
-	GROUPMESSGAE   = "group"
+	NORMALESSAGE = "normal"
+	GROUPMESSGAE = "group"
 
-	GROUPMESSGAEZH   = "群聊"
+	GROUPMESSGAEZH = "群聊"
 	PRIVATEMESSAGE = "private"
 
 	PRIVATEMESSAGEZH = "私聊"
@@ -17,5 +17,5 @@ const (
 
 	ADD    = "add"
 	REMOVE = "remove"
-	NODE = "node"
+	NODE   = "node"
 )

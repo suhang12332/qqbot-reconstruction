@@ -68,7 +68,7 @@ func (h *HappyPlugin) Execute(receive *message.Receive) *message.Send {
 				Type: variable.NODE,
 				Data: variable.GroupFowardData{
 					Name:    happyResult,
-					Uin:     receive.UserID,
+					Uin:     variable.QQ,
 					Content: util.PictureCQ(strings.Replace(value, `https://jmtp.mediavorous.com/storage/article`, `http://127.0.0.1:8081/happy`, 1)),
 				},
 			}
@@ -97,6 +97,6 @@ func (h *HappyPlugin) SetWhiteList(whiteList []string) {
 	h.whitelist = whiteList
 }
 
-func (h *HappyPlugin) Query(len int) ([]string,bool)  {
+func (h *HappyPlugin) Query(len int) ([]string, bool) {
 	return server.Infos(len)
 }
